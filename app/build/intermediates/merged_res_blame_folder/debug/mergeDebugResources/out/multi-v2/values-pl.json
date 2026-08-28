@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.fitunity.app-mergeDebugResources-1:/values-pl/values-pl.xml",
+            "outputFile": "com.example.fitunity.app-mergeDebugResources-38:/values-pl/values-pl.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Caua\\.gradle\\caches\\9.5.0\\transforms\\77abd70a8b546a6c5302f9812951487b\\transformed\\core-1.16.0\\res\\values-pl\\values-pl.xml",

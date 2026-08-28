@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:2:1-28:12
-INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:2:1-28:12
+ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:2:1-28:12
 MERGED from [androidx.compose.material:material-icons-core-android:1.7.8] C:\Users\Caua\.gradle\caches\9.5.0\transforms\cee9e8a3eb9b90dbb70f394be44608cf\transformed\material-icons-core-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material3:material3-android:1.4.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\5279d45501b26453a95421b674c62adc\transformed\material3\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.compose.material:material-android:1.10.4] C:\Users\Caua\.gradle\caches\9.5.0\transforms\d7540bb90ff41d9f47be7754c1ca61a6\transformed\material\AndroidManifest.xml:2:1-7:12
@@ -67,18 +67,18 @@ MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\User
 MERGED from [androidx.print:print:1.0.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\ac751c10f4e2089414b5529c7d638cfb\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\94c9dc5f41e0eec40414f812c1928126\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
 	package
-		INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml
 	xmlns:tools
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:3:5-51
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
-		INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:2:11-69
 application
-ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:5:5-26:19
-INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:5:5-26:19
+ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:5:5-26:19
+INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:5:5-26:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.10.4] C:\Users\Caua\.gradle\caches\9.5.0\transforms\dc72e7d134057e3d32e7afaca3c109e9\transformed\ui-tooling\AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.10.4] C:\Users\Caua\.gradle\caches\9.5.0\transforms\dc72e7d134057e3d32e7afaca3c109e9\transformed\ui-tooling\AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.compose.ui:ui-test-manifest:1.10.4] C:\Users\Caua\.gradle\caches\9.5.0\transforms\5bf5abdd05a65c6005e453068a958e5e\transformed\ui-test-manifest-1.10.4\AndroidManifest.xml:22:5-27:19
@@ -98,51 +98,51 @@ MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\Caua\.gr
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Caua\.gradle\caches\9.5.0\transforms\2e6f548d171f3ead1cdd359e300ed2d5\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\Caua\.gradle\caches\9.5.0\transforms\2e6f548d171f3ead1cdd359e300ed2d5\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 	android:extractNativeLibs
-		INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.16.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\77abd70a8b546a6c5302f9812951487b\transformed\core-1.16.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:12:9-35
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:12:9-35
 	android:label
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:10:9-41
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:10:9-41
 	android:fullBackupContent
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:8:9-54
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:8:9-54
 	android:roundIcon
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:11:9-54
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:11:9-54
 	android:icon
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:9:9-43
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:9:9-43
 	android:allowBackup
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:6:9-35
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:6:9-35
 	android:theme
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:13:9-46
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:13:9-46
 	android:dataExtractionRules
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:7:9-65
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:7:9-65
 activity#com.example.fitunity.MainActivity
-ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:14:9-25:20
+ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:14:9-25:20
 	android:label
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:17:13-45
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:17:13-45
 	android:windowSoftInputMode
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:19:13-55
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:19:13-55
 	android:exported
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:16:13-36
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:16:13-36
 	android:theme
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:18:13-50
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:18:13-50
 	android:name
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:15:13-41
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:15:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:20:13-24:29
+ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:20:13-24:29
 action#android.intent.action.MAIN
-ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:21:17-69
+ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:21:17-69
 	android:name
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:21:25-66
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:21:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:23:17-77
+ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:23:17-77
 	android:name
-		ADDED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml:23:27-74
+		ADDED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml:23:27-74
 uses-sdk
-INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml
-INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml
 MERGED from [androidx.compose.material:material-icons-core-android:1.7.8] C:\Users\Caua\.gradle\caches\9.5.0\transforms\cee9e8a3eb9b90dbb70f394be44608cf\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.7.8] C:\Users\Caua\.gradle\caches\9.5.0\transforms\cee9e8a3eb9b90dbb70f394be44608cf\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material3:material3-android:1.4.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\5279d45501b26453a95421b674c62adc\transformed\material3\AndroidManifest.xml:20:5-44
@@ -268,9 +268,9 @@ MERGED from [androidx.print:print:1.0.0] C:\Users\Caua\.gradle\caches\9.5.0\tran
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\94c9dc5f41e0eec40414f812c1928126\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\94c9dc5f41e0eec40414f812c1928126\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
 	android:targetSdkVersion
-		INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\AndroidStudioProjects\FitUnity\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidManifest.xml
 activity#androidx.compose.ui.tooling.PreviewActivity
 ADDED from [androidx.compose.ui:ui-tooling-android:1.10.4] C:\Users\Caua\.gradle\caches\9.5.0\transforms\dc72e7d134057e3d32e7afaca3c109e9\transformed\ui-tooling\AndroidManifest.xml:23:9-25:39
 	android:exported

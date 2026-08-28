@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.fitunity.app-mergeDebugResources-1:/values/values.xml",
+            "outputFile": "com.example.fitunity.app-mergeDebugResources-38:/values/values.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Caua\\.gradle\\caches\\9.5.0\\transforms\\fc8a976c434e5f7b202fcf7fa9cd7674\\transformed\\lifecycle-viewmodel-release\\res\\values\\values.xml",
@@ -18,23 +18,6 @@
                         "startOffsets": "9246",
                         "endColumns": "49",
                         "endOffsets": "9291"
-                    }
-                },
-                {
-                    "source": "C:\\AndroidStudioProjects\\FitUnity\\app\\src\\main\\res\\values\\strings.xml",
-                    "from": {
-                        "startLines": "1",
-                        "startColumns": "4",
-                        "startOffsets": "16",
-                        "endColumns": "45",
-                        "endOffsets": "57"
-                    },
-                    "to": {
-                        "startLines": "199",
-                        "startColumns": "4",
-                        "startOffsets": "9715",
-                        "endColumns": "45",
-                        "endOffsets": "9756"
                     }
                 },
                 {
@@ -71,23 +54,6 @@
                         "endLines": "25,73,74,76,77,78,79,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,155,156,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,195,200,201,202,203,204,205,206,294,321,325,326,330,331,333,334,351,361,415,436,469,475",
                         "endColumns": "59,71,87,64,65,68,62,69,67,71,69,60,73,72,60,60,61,63,61,60,67,99,59,65,72,68,56,51,61,71,75,64,34,34,54,62,54,57,55,57,60,62,56,50,57,49,60,56,65,33,34,34,69,66,71,68,68,73,71,87,70,116,12,109,12,128,71,66,24,24,24,24,24,24",
                         "endOffsets": "875,2395,2483,2590,2656,2725,2788,3131,3199,3271,3341,3402,3476,3549,3610,3671,3733,3797,3859,3920,3988,4088,4148,4214,4287,4356,4413,4465,4527,4599,4675,4740,7360,7395,7704,7767,7822,7880,7936,7994,8055,8118,8175,8226,8284,8334,8395,8452,8518,8552,8587,8622,9487,9823,9895,9964,10033,10107,10179,10267,16442,18068,18269,18379,18580,18709,18866,18933,19489,19790,22289,22970,23652,23819"
-                    }
-                },
-                {
-                    "source": "C:\\AndroidStudioProjects\\FitUnity\\app\\src\\main\\res\\values\\colors.xml",
-                    "from": {
-                        "startLines": "7,2,3,4,5,6,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "286,55,102,149,196,241,328",
-                        "endColumns": "41,46,46,46,44,44,41",
-                        "endOffsets": "323,97,144,191,236,281,365"
-                    },
-                    "to": {
-                        "startLines": "75,80,81,82,83,84,85",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "2488,2793,2840,2887,2934,2979,3024",
-                        "endColumns": "41,46,46,46,44,44,41",
-                        "endOffsets": "2525,2835,2882,2929,2974,3019,3061"
                     }
                 },
                 {
@@ -212,23 +178,6 @@
                     }
                 },
                 {
-                    "source": "C:\\AndroidStudioProjects\\FitUnity\\app\\src\\main\\res\\values\\themes.xml",
-                    "from": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "56",
-                        "endColumns": "85",
-                        "endOffsets": "137"
-                    },
-                    "to": {
-                        "startLines": "332",
-                        "startColumns": "4",
-                        "startOffsets": "18714",
-                        "endColumns": "84",
-                        "endOffsets": "18794"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Caua\\.gradle\\caches\\9.5.0\\transforms\\3e48e15bb493bbcd355e55068f381b68\\transformed\\window-1.5.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,9,17,25,31,37,49,55,61,62,63,64,70,71,72,73,79,84,103,111,129",
@@ -315,6 +264,57 @@
                         "startOffsets": "7276,7443",
                         "endColumns": "53,66",
                         "endOffsets": "7325,7505"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Caua\\Documents\\GitHub\\App-FitUnity\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "7,2,3,4,5,6,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "293,57,105,153,201,247,336",
+                        "endColumns": "41,46,46,46,44,44,41",
+                        "endOffsets": "330,99,147,195,241,287,373"
+                    },
+                    "to": {
+                        "startLines": "75,80,81,82,83,84,85",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "2488,2793,2840,2887,2934,2979,3024",
+                        "endColumns": "41,46,46,46,44,44,41",
+                        "endOffsets": "2525,2835,2882,2929,2974,3019,3061"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Caua\\Documents\\GitHub\\App-FitUnity\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "17",
+                        "endColumns": "45",
+                        "endOffsets": "58"
+                    },
+                    "to": {
+                        "startLines": "199",
+                        "startColumns": "4",
+                        "startOffsets": "9715",
+                        "endColumns": "45",
+                        "endOffsets": "9756"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Caua\\Documents\\GitHub\\App-FitUnity\\app\\src\\main\\res\\values\\themes.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "59",
+                        "endColumns": "85",
+                        "endOffsets": "140"
+                    },
+                    "to": {
+                        "startLines": "332",
+                        "startColumns": "4",
+                        "startOffsets": "18714",
+                        "endColumns": "84",
+                        "endOffsets": "18794"
                     }
                 }
             ]
