@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.fitunity.ui.FitUnityOnboardingScreen
+import com.example.fitunity.ui.Navigation
+import com.example.fitunity.ui.SplashScreen
 import com.example.fitunity.ui.theme.FitUnityTheme
 import com.example.fitunity.ui.TreinosScreen
 
@@ -14,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FitUnityTheme {
-                FitUnityOnboardingScreen()
+                Navigation()
             }
         }
     }

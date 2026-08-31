@@ -1,10 +1,14 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.fitunity.app-mergeDebugResources-38:/values-v30/values-v30.xml",
+            "outputFile": "com.example.fitunity.app-mergeDebugResources-39:/values-v30/values-v30.xml",
             "map": [
                 {
+<<<<<<< Updated upstream
                     "source": "C:\\Users\\Admin\\.gradle\\caches\\9.5.0\\transforms\\5279d45501b26453a95421b674c62adc\\transformed\\material3\\res\\values-v30\\values-v30.xml",
+=======
+                    "source": "C:\\Users\\Caua\\.gradle\\caches\\9.5.0\\transforms\\8fe9a93bd4e4cb5e485d78c031fdea51\\transformed\\material3\\res\\values-v30\\values-v30.xml",
+>>>>>>> Stashed changes
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
