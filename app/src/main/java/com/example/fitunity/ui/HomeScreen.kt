@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitunity.R
+import com.example.fitunity.data.SessionManager
 import com.example.fitunity.ui.Rotas
 
 data class TreinoResumo(
@@ -35,19 +36,25 @@ data class TreinoResumo(
 
 // onIrPraticaClick / onTreinoClick -> devem levar para a tela de Treino
 // onNotificationClick / onSettingsClick -> ainda sem tela própria (TODO)
+// Nome, nível e progresso vêm do usuário logado (SessionManager); os parâmetros
+// abaixo servem de fallback (ex.: preview) caso ninguém esteja logado.
 @Composable
 fun HomeScreen(
     navController: NavController,
-    nomeUsuario: String = "Guilherme",
-    treinoDoDiaNome: String = "Full Body - Intermediário",
-    treinosConcluidosSemana: Int = 5,
-    metaSemana: Int = 7,
     treinosHoje: List<TreinoResumo> = listOf(
         TreinoResumo("Supino inclinado", "3 séries • 10 repetições", R.drawable.supino_inclinado),
         TreinoResumo("Barra Fixa", "4 séries • 8 repetições", R.drawable.barra_fixa),
         TreinoResumo("Corrida", "20 km • 30 min", R.drawable.corrida)
     )
 ) {
+    val perfil = SessionManager.usuarioAtual.value
+
+    val nomeUsuario = perfil?.nome ?: "Usuário"
+    val treinoDoDiaNome = "Full Body - ${perfil?.nivel ?: "Intermediário"}"
+    val treinosConcluidosSemana = perfil?.treinosRealizados ?: 0
+    val metaSemana = (perfil?.let { it.treinosRealizados + it.treinosPendentes } ?: 0)
+        .let { if (it > 0) it else 7 }
+
     Scaffold(
         topBar = {
             HomeTopBar(

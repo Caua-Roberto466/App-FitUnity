@@ -1,8 +1,12 @@
 package com.example.fitunity.data
 
+import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.security.MessageDigest
 
 // Modelo de dados com as informações visíveis do perfil
 data class PerfilCliente(
@@ -47,6 +51,82 @@ class FitUnityDbHelper(context: Context) :
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USUARIOS")
         onCreate(db)
+    }
+
+    /**
+     * Cria um novo usuário. Retorna o id gerado, ou -1L se o e-mail já estiver cadastrado.
+     */
+    fun cadastrarUsuario(
+        nome: String,
+        email: String,
+        senha: String,
+        dataNascimento: String = "",
+        genero: String = ""
+    ): Long {
+        val valores = ContentValues().apply {
+            put(COLUMN_EMAIL, normalizarEmail(email))
+            put(COLUMN_SENHA, hashSenha(senha))
+            put(COLUMN_NOME, nome.trim())
+            put(COLUMN_DATA_NASCIMENTO, dataNascimento)
+            put(COLUMN_GENERO, genero)
+        }
+        return try {
+            writableDatabase.insertOrThrow(TABLE_USUARIOS, null, valores)
+        } catch (e: SQLiteConstraintException) {
+            -1L // e-mail já existe (coluna é UNIQUE)
+        }
+    }
+
+    /**
+     * Verifica e-mail e senha. Retorna o perfil do usuário se as credenciais
+     * baterem, ou null caso contrário.
+     */
+    fun autenticarUsuario(email: String, senha: String): PerfilCliente? {
+        val db = readableDatabase
+        val cursor = db.query(
+            TABLE_USUARIOS,
+            null,
+            "$COLUMN_EMAIL = ? AND $COLUMN_SENHA = ?",
+            arrayOf(normalizarEmail(email), hashSenha(senha)),
+            null, null, null
+        )
+        return cursor.use { if (it.moveToFirst()) it.paraPerfilCliente() else null }
+    }
+
+    /**
+     * Busca o perfil pelo id. Útil para recarregar os dados atualizados do usuário logado.
+     */
+    fun buscarPerfilPorId(id: Long): PerfilCliente? {
+        val db = readableDatabase
+        val cursor = db.query(
+            TABLE_USUARIOS,
+            null,
+            "$COLUMN_ID = ?",
+            arrayOf(id.toString()),
+            null, null, null
+        )
+        return cursor.use { if (it.moveToFirst()) it.paraPerfilCliente() else null }
+    }
+
+    private fun Cursor.paraPerfilCliente(): PerfilCliente = PerfilCliente(
+        id = getLong(getColumnIndexOrThrow(COLUMN_ID)),
+        nome = getString(getColumnIndexOrThrow(COLUMN_NOME)),
+        pesoAtual = getDouble(getColumnIndexOrThrow(COLUMN_PESO_ATUAL)),
+        objetivoPeso = getDouble(getColumnIndexOrThrow(COLUMN_OBJETIVO_PESO)),
+        treinosRealizados = getInt(getColumnIndexOrThrow(COLUMN_TREINOS_REALIZADOS)),
+        treinosPendentes = getInt(getColumnIndexOrThrow(COLUMN_TREINOS_PENDENTES)),
+        nivel = getString(getColumnIndexOrThrow(COLUMN_NIVEL)),
+        tipoPlano = getString(getColumnIndexOrThrow(COLUMN_TIPO_PLANO)),
+        tempoCadastrado = getString(getColumnIndexOrThrow(COLUMN_TEMPO_CADASTRADO)),
+        progresso = getDouble(getColumnIndexOrThrow(COLUMN_PROGRESSO))
+    )
+
+    private fun normalizarEmail(email: String): String = email.trim().lowercase()
+
+    // Guarda apenas o hash da senha (SHA-256), nunca o texto puro.
+    private fun hashSenha(senha: String): String {
+        val bytes = MessageDigest.getInstance("SHA-256").digest(senha.toByteArray())
+        return bytes.joinToString("") { "%02x".format(it) }
     }
 
     companion object {

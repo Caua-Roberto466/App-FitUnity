@@ -25,15 +25,18 @@ import com.example.fitunity.R
 
 // onCadastrarClick recebe (nome, email, senha) -> criar conta e navegar para a tela principal
 // onJaTenhoContaClick -> deve levar para a tela de LOGIN
+// erro -> mensagem a ser exibida (ex.: "e-mail já cadastrado"); null quando não há erro
 //
 // Exemplo de uso com Navigation Compose:
 //
 // CadastroScreen(
+//     erro = erro,
 //     onCadastrarClick = { nome, email, senha -> viewModel.cadastrar(nome, email, senha) },
 //     onJaTenhoContaClick = { navController.navigate("login") }
 // )
 @Composable
 fun CadastroScreen(
+    erro: String? = null,
     onCadastrarClick: (String, String, String) -> Unit = { _, _, _ -> },
     onJaTenhoContaClick: () -> Unit = {}
 ) {
@@ -147,7 +150,18 @@ fun CadastroScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (erro != null) {
+                Text(
+                    text = erro,
+                    color = Color.Red,
+                    fontSize = 13.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
             // Botão Cadastrar
             Button(

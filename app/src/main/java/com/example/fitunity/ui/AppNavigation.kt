@@ -1,9 +1,16 @@
 package com.example.fitunity.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.fitunity.data.FitUnityDbHelper
+import com.example.fitunity.data.SessionManager
 import com.example.fitunity.ui.screens.CadastroScreen
 import com.example.fitunity.ui.screens.DietaScreen
 import com.example.fitunity.ui.screens.FitUnityOnboardingScreen
@@ -58,13 +65,28 @@ fun AppNavigation() {
             )
         }
 
-        // Login -> Home (painel principal) após autenticar
+        // Login -> valida contra o banco de verdade e vai para a Home
         composable(Rotas.LOGIN) {
+            val context = LocalContext.current
+            val dbHelper = remember { FitUnityDbHelper(context) }
+            var erro by remember { mutableStateOf<String?>(null) }
+
             LoginScreen(
-                onEntrarClick = { _, _ ->
-                    // TODO: validar credenciais (ex.: via FitUnityDbHelper) antes de navegar
-                    navController.navigate(Rotas.HOME) {
-                        popUpTo(Rotas.SPLASH) { inclusive = true }
+                erro = erro,
+                onEntrarClick = { email, senha ->
+                    if (email.isBlank() || senha.isBlank()) {
+                        erro = "Preencha e-mail e senha"
+                    } else {
+                        val perfil = dbHelper.autenticarUsuario(email, senha)
+                        if (perfil != null) {
+                            erro = null
+                            SessionManager.login(perfil)
+                            navController.navigate(Rotas.HOME) {
+                                popUpTo(Rotas.SPLASH) { inclusive = true }
+                            }
+                        } else {
+                            erro = "E-mail ou senha incorretos"
+                        }
                     }
                 },
                 onEsqueceuSenhaClick = {
@@ -78,13 +100,33 @@ fun AppNavigation() {
             )
         }
 
-        // Cadastro -> Home (painel principal) após criar a conta
+        // Cadastro -> cria o usuário de verdade no banco e vai para a Home
         composable(Rotas.CADASTRO) {
+            val context = LocalContext.current
+            val dbHelper = remember { FitUnityDbHelper(context) }
+            var erro by remember { mutableStateOf<String?>(null) }
+
             CadastroScreen(
-                onCadastrarClick = { _, _, _ ->
-                    // TODO: salvar o novo usuário (ex.: via FitUnityDbHelper) antes de navegar
-                    navController.navigate(Rotas.HOME) {
-                        popUpTo(Rotas.SPLASH) { inclusive = true }
+                erro = erro,
+                onCadastrarClick = { nome, email, senha ->
+                    if (nome.isBlank() || email.isBlank() || senha.isBlank()) {
+                        erro = "Preencha todos os campos"
+                    } else {
+                        val idGerado = dbHelper.cadastrarUsuario(
+                            nome = nome,
+                            email = email,
+                            senha = senha
+                        )
+                        if (idGerado == -1L) {
+                            erro = "Este e-mail já está cadastrado"
+                        } else {
+                            erro = null
+                            val perfil = dbHelper.buscarPerfilPorId(idGerado)
+                            perfil?.let { SessionManager.login(it) }
+                            navController.navigate(Rotas.HOME) {
+                                popUpTo(Rotas.SPLASH) { inclusive = true }
+                            }
+                        }
                     }
                 },
                 onJaTenhoContaClick = {
@@ -95,7 +137,7 @@ fun AppNavigation() {
             )
         }
 
-        // Painel principal
+        // Painel principal — lê o usuário logado via SessionManager
         composable(Rotas.HOME) {
             HomeScreen(navController = navController)
         }
