@@ -1,0 +1,8 @@
+com.example.fitunity.app-pngs-0 /home/guilherme/Downloads/Android-Studio/Projetos/App-FitUnity-main/app/build/generated/res/pngs/debug
+com.example.fitunity.app-updated_navigation_xml-1 /home/guilherme/Downloads/Android-Studio/Projetos/App-FitUnity-main/app/build/generated/updated_navigation_xml/debug
+com.example.fitunity.app-packageDebugResources-2 /home/guilherme/Downloads/Android-Studio/Projetos/App-FitUnity-main/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.example.fitunity.app-packageDebugResources-3 /home/guilherme/Downloads/Android-Studio/Projetos/App-FitUnity-main/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.example.fitunity.app-debug-4 /home/guilherme/Downloads/Android-Studio/Projetos/App-FitUnity-main/app/build/intermediates/merged_res/debug/mergeDebugResources
+com.example.fitunity.app-debug-5 /home/guilherme/Downloads/Android-Studio/Projetos/App-FitUnity-main/app/src/debug/res
+com.example.fitunity.app-main-6 /home/guilherme/Downloads/Android-Studio/Projetos/App-FitUnity-main/app/src/main/res
+gradleHome-0 /home/guilherme/.gradle
