@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.fitunity.R
 
 // ---------- Modelo de dados ----------
@@ -47,7 +47,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta que te faz perder peso apenas comendo frutas e legumes, junto de alimentos base de uma refeição, como arroz e feijão",
         categoria = "Perder peso",
         pessoasFizeram = 98756,
-        imagemRes = R.drawable.dieta_frutas_legumes
+        imagemRes = R.drawable.ic_fitunity_logo
     ),
     Dieta(
         id = "2",
@@ -55,7 +55,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta para aqueles que gostam de saborear uma boa carne, mas que querem perder peso. E tudo isso essa dieta oferece",
         categoria = "Perder peso",
         pessoasFizeram = 106457,
-        imagemRes = R.drawable.dieta_carnes
+        imagemRes = R.drawable.ic_fitunity_logo
     ),
     Dieta(
         id = "3",
@@ -63,7 +63,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta que te faz perder peso apenas comendo frutas e legumes, junto de alimentos base de uma refeição, como arroz e feijão",
         categoria = "Perder peso",
         pessoasFizeram = 506246,
-        imagemRes = R.drawable.dieta_populares
+        imagemRes = R.drawable.ic_fitunity_logo
     ),
     Dieta(
         id = "4",
@@ -71,7 +71,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta rica em proteínas magras para ajudar no ganho de massa muscular de forma saudável",
         categoria = "Ganhar massa",
         pessoasFizeram = 45210,
-        imagemRes = R.drawable.dieta_proteina
+        imagemRes = R.drawable.ic_fitunity_logo
     ),
     Dieta(
         id = "5",
@@ -79,7 +79,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta 100% vegana, com todos os nutrientes necessários para o dia a dia",
         categoria = "Vegana",
         pessoasFizeram = 32890,
-        imagemRes = R.drawable.dieta_vegana
+        imagemRes = R.drawable.ic_fitunity_logo
     ),
     Dieta(
         id = "6",
@@ -87,7 +87,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta livre de glúten, ideal para quem tem intolerância ou sensibilidade",
         categoria = "Zero Glúten",
         pessoasFizeram = 18430,
-        imagemRes = R.drawable.dieta_zero_gluten
+        imagemRes = R.drawable.ic_fitunity_logo
     )
 )
 
@@ -95,15 +95,15 @@ private val categorias = listOf("Perder peso", "Ganhar massa", "Vegana", "Zero G
 
 // ---------- Tela principal ----------
 
-// onVerDietaClick(dietaId) -> deve navegar para a tela de detalhes daquela dieta (TODO: ainda não existe)
-// onInfoClick(dietaId) -> deve abrir mais informações daquela dieta (TODO: ainda não existe)
-// A navegação do bottom nav é feita pelo FitUnityBottomBar, reutilizado das outras telas.
+// onVerDietaClick(dietaId) -> deve navegar para a tela de detalhes daquela dieta
+// onNavItemClick(rota) -> deve navegar para a tela correspondente do bottom nav
 @Composable
 fun DietaScreen(
-    navController: NavController,
     dietas: List<Dieta> = dietasExemplo,
     onVerDietaClick: (String) -> Unit = {},
-    onInfoClick: (String) -> Unit = {}
+    onInfoClick: (String) -> Unit = {},
+    onNavItemClick: (String) -> Unit = {},
+    navController: NavHostController
 ) {
     var searchText by remember { mutableStateOf("") }
     var categoriaSelecionada by remember { mutableStateOf(categorias.first()) }
@@ -120,7 +120,12 @@ fun DietaScreen(
 
     Scaffold(
         topBar = { DietaTopBar() },
-        bottomBar = { FitUnityBottomBar(navController) },
+        bottomBar = {
+            DietaBottomNav(
+                itemSelecionado = "Dieta",
+                onItemClick = onNavItemClick
+            )
+        },
         containerColor = Color.White
     ) { padding ->
         LazyColumn(
@@ -388,6 +393,52 @@ private fun DietaCard(
     }
 }
 
-private fun formatarNumero(numero: Int): String {
+ fun formatarNumero(numero: Int): String {
     return "%,d".format(numero).replace(",", ".")
 }
+
+// ---------- Bottom Navigation ----------
+
+@Composable
+private fun DietaBottomNav(itemSelecionado: String, onItemClick: (String) -> Unit) {
+    data class NavItem(val label: String, val icon: androidx.compose.ui.graphics.vector.ImageVector)
+
+    val itens = listOf(
+        NavItem("Inicio", Icons.Filled.Home),
+        NavItem("Treino", Icons.Filled.DirectionsRun),
+        NavItem("Dieta", Icons.Filled.Favorite),
+        NavItem("Perfil", Icons.Filled.Person),
+        NavItem("Mais", Icons.Filled.MoreHoriz)
+    )
+
+    Column {
+        HorizontalDivider(color = FitUnityBlue.copy(alpha = 0.3f), thickness = 1.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            itens.forEach { item ->
+                val selecionado = item.label == itemSelecionado
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.clickable { onItemClick(item.label) }
+                ) {
+                    Icon(
+                        imageVector = item.icon,
+                        contentDescription = item.label,
+                        tint = if (selecionado) FitUnityBlue else Color.Black,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = item.label,
+                        fontSize = 11.sp,
+                        color = if (selecionado) FitUnityBlue else Color.Black
+                    )
+                }
+            }
+        }
+    }
