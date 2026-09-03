@@ -1,5 +1,6 @@
 package com.example.fitunity.data
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -47,6 +48,51 @@ class FitUnityDbHelper(context: Context) :
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USUARIOS")
         onCreate(db)
+    }
+
+    // ==========================================
+    // 1. PARTE DEDICADA AO CADASTRO
+    // ==========================================
+    fun cadastrarUsuario(
+        email: String,
+        nome: String,
+        dataNascimento: String,
+        genero: String,
+        senha: String
+    ): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_EMAIL, email)
+            put(COLUMN_NOME, nome)
+            put(COLUMN_DATA_NASCIMENTO, dataNascimento)
+            put(COLUMN_GENERO, genero)
+            put(COLUMN_SENHA, senha)
+            put(COLUMN_NIVEL, "Iniciante")
+            put(COLUMN_TIPO_PLANO, "Básico")
+        }
+        return db.insert(TABLE_USUARIOS, null, values)
+    }
+
+    // ==========================================
+    // 2. PARTE DEDICADA AO LOGIN
+    // ==========================================
+    fun realizarLogin(email: String, senha: String): Long? {
+        val db = readableDatabase
+        val cursor = db.query(
+            TABLE_USUARIOS,
+            arrayOf(COLUMN_ID),
+            "$COLUMN_EMAIL = ? AND $COLUMN_SENHA = ?",
+            arrayOf(email, senha),
+            null,
+            null,
+            null
+        )
+        cursor.use {
+            if (it.moveToFirst()) {
+                return it.getLong(it.getColumnIndexOrThrow(COLUMN_ID))
+            }
+        }
+        return null
     }
 
     companion object {
