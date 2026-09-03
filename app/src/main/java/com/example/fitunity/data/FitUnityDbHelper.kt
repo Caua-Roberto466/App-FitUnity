@@ -95,6 +95,51 @@ class FitUnityDbHelper(context: Context) :
         return null
     }
 
+    // ==========================================
+    // 3. PARTE DEDICADA AO PERFIL CLIENTE (DADOS VISÍVEIS)
+    // ==========================================
+    fun obterPerfilCliente(usuarioId: Long): PerfilCliente? {
+        val db = readableDatabase
+        val cursor = db.query(
+            TABLE_USUARIOS,
+            arrayOf(
+                COLUMN_ID,
+                COLUMN_NOME,
+                COLUMN_PESO_ATUAL,
+                COLUMN_OBJETIVO_PESO,
+                COLUMN_TREINOS_REALIZADOS,
+                COLUMN_TREINOS_PENDENTES,
+                COLUMN_NIVEL,
+                COLUMN_TIPO_PLANO,
+                COLUMN_TEMPO_CADASTRADO,
+                COLUMN_PROGRESSO
+            ),
+            "$COLUMN_ID = ?",
+            arrayOf(usuarioId.toString()),
+            null,
+            null,
+            null
+        )
+
+        cursor.use {
+            if (it.moveToFirst()) {
+                return PerfilCliente(
+                    id = it.getLong(it.getColumnIndexOrThrow(COLUMN_ID)),
+                    nome = it.getString(it.getColumnIndexOrThrow(COLUMN_NOME)),
+                    pesoAtual = it.getDouble(it.getColumnIndexOrThrow(COLUMN_PESO_ATUAL)),
+                    objetivoPeso = it.getDouble(it.getColumnIndexOrThrow(COLUMN_OBJETIVO_PESO)),
+                    treinosRealizados = it.getInt(it.getColumnIndexOrThrow(COLUMN_TREINOS_REALIZADOS)),
+                    treinosPendentes = it.getInt(it.getColumnIndexOrThrow(COLUMN_TREINOS_PENDENTES)),
+                    nivel = it.getString(it.getColumnIndexOrThrow(COLUMN_NIVEL)),
+                    tipoPlano = it.getString(it.getColumnIndexOrThrow(COLUMN_TIPO_PLANO)),
+                    tempoCadastrado = it.getString(it.getColumnIndexOrThrow(COLUMN_TEMPO_CADASTRADO)),
+                    progresso = it.getDouble(it.getColumnIndexOrThrow(COLUMN_PROGRESSO))
+                )
+            }
+        }
+        return null
+    }
+
     companion object {
         private const val DATABASE_NAME = "fitunity.db"
         private const val DATABASE_VERSION = 1
