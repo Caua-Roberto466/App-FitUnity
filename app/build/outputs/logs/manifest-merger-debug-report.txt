@@ -7,6 +7,7 @@ INJECTED from C:\Users\Caua\Documents\GitHub\App-FitUnity\app\src\main\AndroidMa
 MERGED from [androidx.navigation:navigation-runtime-android:2.10.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\3d634f1188e0c7f061ba5d59e489cd57\transformed\navigation-runtime\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-common-android:2.10.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\4d159404b166e501d2b85c8c688d9140\transformed\navigation-common\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-compose-android:2.10.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\b8c932ea1d73d189e1634b9aaef8def8\transformed\navigation-compose\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.8] C:\Users\Caua\.gradle\caches\9.5.0\transforms\2f719d27a0b9e4dc6ac3af7aebfbde27\transformed\material-icons-extended-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material:material-icons-core-android:1.7.8] C:\Users\Caua\.gradle\caches\9.5.0\transforms\aeab087cf08c8a04a01e6d74669cd3b8\transformed\material-icons-core-release\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.activity:activity-ktx:1.13.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\88a69a834861d606c18ccec1d0f67a47\transformed\activity-ktx-1.13.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material:material-ripple-android:1.10.4] C:\Users\Caua\.gradle\caches\9.5.0\transforms\09d137a5864e514255b1c721311473be\transformed\material-ripple\AndroidManifest.xml:2:1-7:12
@@ -154,6 +155,8 @@ MERGED from [androidx.navigation:navigation-common-android:2.10.0] C:\Users\Caua
 MERGED from [androidx.navigation:navigation-common-android:2.10.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\4d159404b166e501d2b85c8c688d9140\transformed\navigation-common\AndroidManifest.xml:20:5-44
 MERGED from [androidx.navigation:navigation-compose-android:2.10.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\b8c932ea1d73d189e1634b9aaef8def8\transformed\navigation-compose\AndroidManifest.xml:5:5-44
 MERGED from [androidx.navigation:navigation-compose-android:2.10.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\b8c932ea1d73d189e1634b9aaef8def8\transformed\navigation-compose\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.8] C:\Users\Caua\.gradle\caches\9.5.0\transforms\2f719d27a0b9e4dc6ac3af7aebfbde27\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.7.8] C:\Users\Caua\.gradle\caches\9.5.0\transforms\2f719d27a0b9e4dc6ac3af7aebfbde27\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.7.8] C:\Users\Caua\.gradle\caches\9.5.0\transforms\aeab087cf08c8a04a01e6d74669cd3b8\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material:material-icons-core-android:1.7.8] C:\Users\Caua\.gradle\caches\9.5.0\transforms\aeab087cf08c8a04a01e6d74669cd3b8\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
 MERGED from [androidx.activity:activity-ktx:1.13.0] C:\Users\Caua\.gradle\caches\9.5.0\transforms\88a69a834861d606c18ccec1d0f67a47\transformed\activity-ktx-1.13.0\AndroidManifest.xml:5:5-44

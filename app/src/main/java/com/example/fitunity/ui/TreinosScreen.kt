@@ -48,6 +48,11 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.fitunity.R
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -62,7 +67,7 @@ fun TreinosScreen(onTreinoClick: (Int) -> Unit) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { FitUnityTopBar() },
+        topBar = { TreinoTopBar() },
         bottomBar = { BottomNavBar() }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
@@ -162,6 +167,75 @@ fun TreinoCard(treino: Treino, onVerClick: () -> Unit){
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun TreinoTopBar() {
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(horizontal = 16.dp)
+                .padding(top = 32.dp, bottom = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_fitunity_logo),
+                    contentDescription = null,
+                    modifier = Modifier.size(26.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = "FitUnity", color = FitUnityBlue, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            }
+
+            Text(
+                text = "Dieta",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier.weight(1f),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+
+            Row(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box {
+                    Icon(
+                        imageVector = Icons.Filled.Notifications,
+                        contentDescription = "Notificações",
+                        tint = Color.Black,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .size(14.dp)
+                            .clip(CircleShape)
+                            .background(FitUnityBlue),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = "1+", color = Color.White, fontSize = 8.sp)
+                    }
+                }
+                Spacer(modifier = Modifier.width(14.dp))
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = "Configurações",
+                    tint = Color.Black,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+        HorizontalDivider(color = FitUnityBlue.copy(alpha = 0.3f), thickness = 1.dp)
     }
 }
 @Composable

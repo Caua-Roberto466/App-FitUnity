@@ -4,12 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.fitunity.ui.TreinoDetalheScreen
-import com.example.fitunity.ui.TreinosScreen
-import com.example.fitunity.ui.treinosMock
+import com.example.fitunity.ui.DietaScreen
+import com.example.fitunity.ui.Navigation
+import com.example.fitunity.ui.SplashScreen
 import com.example.fitunity.ui.theme.FitUnityTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,24 +15,26 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FitUnityTheme {
-                val navController = rememberNavController()
+                SplashScreen()
+//                val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "treinos") {
-                    composable("treinos") {
-                        TreinosScreen(
-                            onTreinoClick = { treinoId ->
-                                navController.navigate("detalhe/$treinoId")
-                            }
-                        )
-                    }
-                    composable("detalhe/{treinoId}") { backStackEntry ->
-                        val treinoId = backStackEntry.arguments?.getString("treinoId")?.toIntOrNull()
-                        val treino = treinosMock.find { it.id == treinoId }
-                        if (treino != null) {
-                            TreinoDetalheScreen(treino = treino)
-                        }
-                    }
-                }
+//                NavHost(navController = navController, startDestination = "treinos") {
+//                    composable("treinos") {
+//                        TreinosScreen(
+//                            onTreinoClick = { treinoId ->
+//                                navController.navigate("detalhe/$treinoId")
+//                            }
+//                        )
+//                    }
+//                    composable("detalhe/{treinoId}") { backStackEntry ->
+//                        val treinoId = backStackEntry.arguments?.getString("treinoId")?.toIntOrNull()
+//                        val treino = treinosMock.find { it.id == treinoId }
+//                        if (treino != null) {
+//                            TreinoDetalheScreen(treino = treino)
+//                        }
+//                    }
+//                }
+//            }
             }
         }
     }
