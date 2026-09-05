@@ -211,56 +211,64 @@ fun HomeTopBar(
     onNotificationClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(horizontal = 16.dp)
-            .padding(top = 32.dp, bottom = 12.dp)
-    ) {
-        Row(
-            modifier = Modifier.align(Alignment.CenterStart),
-            verticalAlignment = Alignment.CenterVertically
+    Column {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(horizontal = 16.dp)
+                .padding(top = 42.dp, bottom = 8.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_fitunity_logo),
-                contentDescription = null,
-                modifier = Modifier.size(22.dp)
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(text = "FitUnity", color = FitUnityBlue, fontSize = 13.sp, fontWeight = FontWeight.Medium)
-        }
+            Row(
+                modifier = Modifier.align(Alignment.CenterStart),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_fitunity_logo),
+                    contentDescription = null,
+                    modifier = Modifier.size(40.dp)
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = "FitUnity",
+                    color = FitUnityBlue,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
 
-        Text(
-            text = "Início",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            modifier = Modifier.align(Alignment.Center)
-        )
+            Text(
+                text = "Início",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier.align(Alignment.Center)
+            )
 
-        Row(
-            modifier = Modifier.align(Alignment.CenterEnd),
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Notifications,
-                contentDescription = "Notificações",
-                tint = FitUnityBlue,
-                modifier = Modifier
-                    .size(24.dp)
-                    .clip(CircleShape)
-            )
-            Icon(
-                imageVector = Icons.Filled.Settings,
-                contentDescription = "Configurações",
-                tint = FitUnityBlue,
-                modifier = Modifier
-                    .size(24.dp)
-                    .clip(CircleShape)
-            )
+            Row(
+                modifier = Modifier.align(Alignment.CenterEnd),
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Notifications,
+                    contentDescription = "Notificações",
+                    tint = FitUnityBlue,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(CircleShape)
+                )
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = "Configurações",
+                    tint = FitUnityBlue,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(CircleShape)
+                )
+            }
         }
+        HorizontalDivider(color = FitUnityBlue.copy(alpha = 0.3f), thickness = 1.dp)
     }
 }
 
@@ -288,7 +296,12 @@ private fun TreinoResumoCard(treino: TreinoResumo, onClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = treino.nome, fontSize = 15.sp, fontWeight = FontWeight.Medium, color = Color.Black)
+                Text(
+                    text = treino.nome,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black
+                )
                 Text(text = treino.detalhe, fontSize = 13.sp, color = Color.Gray)
             }
             Icon(
@@ -302,7 +315,10 @@ private fun TreinoResumoCard(treino: TreinoResumo, onClick: () -> Unit) {
 
 @Composable
 private fun CarouselDots(total: Int, selecionado: Int) {
-    Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         repeat(total) { i ->
             Box(
                 modifier = Modifier

@@ -39,7 +39,7 @@ fun FitUnityOnboardingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(25.dp))
 
             Text(
                 text = "Faça parte da FitUnity",
@@ -49,7 +49,7 @@ fun FitUnityOnboardingScreen(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(34.dp))
 
             // Imagem principal com cartões sobrepostos
             Box(
@@ -92,7 +92,7 @@ fun FitUnityOnboardingScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(22.dp))
 
             Text(
                 text = "Monte treinos e dietas personalizados de forma simples e facil para conseguir ter uma vida mais saudavel e equilibrada",
@@ -101,6 +101,7 @@ fun FitUnityOnboardingScreen(
                 textAlign = TextAlign.Center
             )
 
+            Spacer(modifier = Modifier.height(12.dp))
             Spacer(modifier = Modifier.weight(1f))
 
             // Botão Começar
@@ -136,13 +137,13 @@ fun FitUnityOnboardingScreen(
                 Image(
                     painter = painterResource(id = R.drawable.ic_fitunity_logo),
                     contentDescription = null,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(34.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(text = "FitUnity", color = FitUnityBlue, fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
@@ -154,14 +155,14 @@ fun FitUnityTopBar() {
             .fillMaxWidth()
             .background(Color.White)
             .padding(horizontal = 16.dp)
-            .padding(top = 32.dp, bottom = 12.dp),
+            .padding(top = 42.dp, bottom = 12.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_fitunity_logo),
             contentDescription = null,
-            modifier = Modifier.size(28.dp)
+            modifier = Modifier.size(40.dp)
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(text = "FitUnity", color = FitUnityBlue, fontSize = 18.sp, fontWeight = FontWeight.Medium)

@@ -6,18 +6,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.fitunity.data.FitUnityDbHelper
 import com.example.fitunity.data.SessionManager
 import com.example.fitunity.ui.screens.CadastroScreen
+import com.example.fitunity.ui.screens.DietaDetalheScreen
 import com.example.fitunity.ui.screens.DietaScreen
 import com.example.fitunity.ui.screens.FitUnityOnboardingScreen
 import com.example.fitunity.ui.screens.HomeScreen
 import com.example.fitunity.ui.screens.LoginScreen
 import com.example.fitunity.ui.screens.SplashScreen
 import com.example.fitunity.ui.screens.TreinosScreen
+import com.example.fitunity.ui.screens.dietasExemplo
 
 /**
  * Nomes das rotas usadas no NavHost.
@@ -31,6 +35,9 @@ object Rotas {
     const val HOME = "home"
     const val TREINOS = "treinos"
     const val DIETA = "dieta"
+    const val DIETA_DETALHE = "dieta_detalhe/{dietaId}"
+
+    fun dietaDetalhe(dietaId: String) = "dieta_detalhe/$dietaId"
 }
 
 @Composable
@@ -149,7 +156,35 @@ fun AppNavigation() {
 
         // Dieta (também acessível pela barra inferior)
         composable(Rotas.DIETA) {
-            DietaScreen(navController = navController)
+            DietaScreen(
+                navController = navController,
+                onVerDietaClick = { dietaId ->
+                    navController.navigate(Rotas.dietaDetalhe(dietaId))
+                }
+            )
+        }
+
+        // Detalhe de uma dieta específica
+        composable(
+            route = Rotas.DIETA_DETALHE,
+            arguments = listOf(navArgument("dietaId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val dietaId = backStackEntry.arguments?.getString("dietaId") ?: ""
+            val dieta = dietasExemplo.find { it.id == dietaId }
+
+            if (dieta != null) {
+                DietaDetalheScreen(
+                    dieta = dieta,
+                    onVoltarClick = { navController.popBackStack() },
+                    onIniciarDietaClick = {
+                        // TODO: registrar a dieta escolhida no perfil do usuário (ex.: via FitUnityDbHelper)
+                        navController.popBackStack()
+                    }
+                )
+            } else {
+                // Dieta não encontrada (id inválido) -> volta para a lista
+                navController.popBackStack()
+            }
         }
     }
 }

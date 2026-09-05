@@ -191,27 +191,34 @@ fun DietaScreen(
 // ---------- Componentes ----------
 
 @Composable
-private fun DietaTopBar() {
+ fun DietaTopBar(
+    onNotificationClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {}
+ ) {
     Column {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
                 .padding(horizontal = 16.dp)
-                .padding(top = 32.dp, bottom = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(top = 42.dp, bottom = 8.dp)
         ) {
             Row(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.align(Alignment.CenterStart),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_fitunity_logo),
                     contentDescription = null,
-                    modifier = Modifier.size(26.dp)
+                    modifier = Modifier.size(40.dp)
                 )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "FitUnity", color = FitUnityBlue, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = "FitUnity",
+                    color = FitUnityBlue,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium
+                )
             }
 
             Text(
@@ -219,39 +226,29 @@ private fun DietaTopBar() {
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
-                modifier = Modifier.weight(1f),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                modifier = Modifier.align(Alignment.Center)
             )
 
             Row(
-                modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.align(Alignment.CenterEnd),
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box {
-                    Icon(
-                        imageVector = Icons.Filled.Notifications,
-                        contentDescription = "Notificações",
-                        tint = Color.Black,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .size(14.dp)
-                            .clip(CircleShape)
-                            .background(FitUnityBlue),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "1+", color = Color.White, fontSize = 8.sp)
-                    }
-                }
-                Spacer(modifier = Modifier.width(14.dp))
+                Icon(
+                    imageVector = Icons.Filled.Notifications,
+                    contentDescription = "Notificações",
+                    tint = FitUnityBlue,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(CircleShape)
+                )
                 Icon(
                     imageVector = Icons.Filled.Settings,
                     contentDescription = "Configurações",
-                    tint = Color.Black,
-                    modifier = Modifier.size(24.dp)
+                    tint = FitUnityBlue,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(CircleShape)
                 )
             }
         }
@@ -388,6 +385,6 @@ private fun DietaCard(
     }
 }
 
-private fun formatarNumero(numero: Int): String {
+fun formatarNumero(numero: Int): String {
     return "%,d".format(numero).replace(",", ".")
 }
