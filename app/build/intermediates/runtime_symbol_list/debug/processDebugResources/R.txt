@@ -127,6 +127,10 @@ int drawable notification_template_icon_bg 0x7f040013
 int drawable notification_template_icon_low_bg 0x7f040014
 int drawable notification_tile_bg 0x7f040015
 int drawable notify_panel_notification_icon_bg 0x7f040016
+int drawable treino_flexoes 0x7f040018
+int drawable treino_full_body 0x7f040019
+int drawable treino_hiit 0x7f04001a
+int drawable treino_pernas_gluteos 0x7f04001b
 int drawable treino_personal 0x7f040017
 int id accessibility_action_clickable_span 0x7f050000
 int id accessibility_custom_action_0 0x7f050001

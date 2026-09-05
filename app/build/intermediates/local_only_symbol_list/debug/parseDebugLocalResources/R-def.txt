@@ -10,6 +10,10 @@ color white
 drawable ic_fitunity_logo
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable treino_flexoes
+drawable treino_full_body
+drawable treino_hiit
+drawable treino_pernas_gluteos
 drawable treino_personal
 mipmap ic_launcher
 mipmap ic_launcher_round

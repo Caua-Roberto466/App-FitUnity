@@ -1,74 +1,90 @@
 [
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-mdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\drawable\\ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/drawable_treino_personal.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/drawable/treino_personal.webp"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\drawable_treino_personal.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\drawable\\treino_personal.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.example.fitunity.app-main-43:/drawable/ic_launcher_foreground.xml"
+        "merged": "com.example.fitunity.app-debug-41:/drawable_treino_flexoes.webp.flat",
+        "source": "com.example.fitunity.app-main-43:/drawable/treino_flexoes.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/xml_backup_rules.xml.flat",
-        "source": "com.example.fitunity.app-main-43:/xml/backup_rules.xml"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-xxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "com.example.fitunity.app-debug-41:/drawable_treino_hiit.webp.flat",
+        "source": "com.example.fitunity.app-main-43:/drawable/treino_hiit.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/drawable_ic_fitunity_logo.png.flat",
-        "source": "com.example.fitunity.app-main-43:/drawable/ic_fitunity_logo.png"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\xml\\data_extraction_rules.xml"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/drawable_ic_launcher_background.xml.flat",
-        "source": "com.example.fitunity.app-main-43:/drawable/ic_launcher_background.xml"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-xhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-xxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "com.example.fitunity.app-debug-41:/drawable_treino_full_body.webp.flat",
+        "source": "com.example.fitunity.app-main-43:/drawable/treino_full_body.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\drawable\\ic_launcher_background.xml"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-hdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/xml_data_extraction_rules.xml.flat",
-        "source": "com.example.fitunity.app-main-43:/xml/data_extraction_rules.xml"
+        "merged": "com.example.fitunity.app-debug-41:/drawable_treino_pernas_gluteos.webp.flat",
+        "source": "com.example.fitunity.app-main-43:/drawable/treino_pernas_gluteos.webp"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\xml\\backup_rules.xml"
     },
     {
-        "merged": "com.example.fitunity.app-debug-41:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "com.example.fitunity.app-main-43:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\drawable_ic_fitunity_logo.png.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\drawable\\ic_fitunity_logo.png"
+    },
+    {
+        "merged": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-debug-41:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Caua\\.gradle\\daemon\\9.5.0\\com.example.fitunity.app-main-43:\\mipmap-hdpi\\ic_launcher.webp"
     }
 ]

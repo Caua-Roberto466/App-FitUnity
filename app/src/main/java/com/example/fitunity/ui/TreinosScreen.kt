@@ -1,6 +1,5 @@
 package com.example.fitunity.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -48,10 +46,17 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.fitunity.R
+import androidx.compose.foundation.Image
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 
+val AzulFitUnity = Color(0xFF29B6F6)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TreinosScreen(){
+fun TreinosScreen(onTreinoClick: (Int) -> Unit) {
     var busca by remember { mutableStateOf("") }
     var nivelSelecionado by remember { mutableStateOf(Nivel.INICIANTE) }
 
@@ -71,7 +76,10 @@ fun TreinosScreen(){
                     .padding(16.dp)
             )
 
-            val treinosFiltrados = treinosMock.filter { it.nivel == nivelSelecionado }
+            val treinosFiltrados = treinosMock.filter { treino ->
+                treino.nivel == nivelSelecionado &&
+                        (busca.isBlank() || treino.titulo.contains(busca, ignoreCase = true))
+            }
 
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 16.dp),
@@ -81,7 +89,11 @@ fun TreinosScreen(){
                     FilterChip(
                         selected = nivel == nivelSelecionado,
                         onClick = { nivelSelecionado = nivel },
-                        label = { Text(nivel.label) }
+                        label = { Text(nivel.label) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = AzulFitUnity,
+                            selectedLabelColor = Color.White
+                        )
                     )
                 }
             }
@@ -94,7 +106,7 @@ fun TreinosScreen(){
                 items(treinosFiltrados) { treino ->
                     TreinoCard(
                         treino = treino,
-                        onVerClick = { /* por enquanto vazio */ }
+                        onVerClick = { onTreinoClick(treino.id) }
                     )
                 }
             }
@@ -113,10 +125,13 @@ fun TreinoCard(treino: Treino, onVerClick: () -> Unit){
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
+            Image(
+                painter = painterResource(id = treino.imagemRes),
+                contentDescription = treino.titulo,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(80.dp)
-                    .background(Color.LightGray, RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(12.dp))
             )
             // <- Box fecha aqui, sem chaves { } abrindo nada dentro
 
@@ -126,7 +141,7 @@ fun TreinoCard(treino: Treino, onVerClick: () -> Unit){
                 Text(
                     text = treino.titulo,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF29B6F6)
+                    color = AzulFitUnity
                 )
                 Text(
                     text = "${treino.categoria} • ${treino.duracaoMin} min • ${treino.nivel.label}",
@@ -141,7 +156,7 @@ fun TreinoCard(treino: Treino, onVerClick: () -> Unit){
                 Button(
                     onClick = onVerClick,
                     modifier = Modifier.align(Alignment.End),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF29B6F6))
+                    colors = ButtonDefaults.buttonColors(containerColor = AzulFitUnity)
                 ) {
                     Text("Ver", color = Color.White)
                 }
@@ -170,14 +185,15 @@ data class Treino(
     val titulo: String,
     val categoria: String,
     val duracaoMin: Int,
-    val nivel: Nivel
+    val nivel: Nivel,
+    val imagemRes: Int
 )
 
 val treinosMock = listOf(
-    Treino(1, "Treino Full body", "Força/resistência", 40, Nivel.INICIANTE),
-    Treino(2, "Treino pernas e Glúteos", "Força/resistência", 50, Nivel.INICIANTE),
-    Treino(3, "Treino HIIT Queima Gordura", "Cardio/resistência", 30, Nivel.INICIANTE),
-    Treino(4, "Treino de Flexões", "Cardio/resistência", 30, Nivel.INTERMEDIARIO)
+    Treino(1, "Treino Full body", "Força/resistência", 40, Nivel.INICIANTE, R.drawable.treino_full_body),
+    Treino(2, "Treino pernas e Glúteos", "Força/resistência", 50, Nivel.INICIANTE, R.drawable.treino_pernas_gluteos),
+    Treino(3, "Treino HIIT Queima Gordura", "Cardio/resistência", 30, Nivel.INICIANTE, R.drawable.treino_hiit),
+    Treino(4, "Treino de Flexões", "Cardio/resistência", 30, Nivel.INTERMEDIARIO, R.drawable.treino_flexoes)
 )
 
 data class NavItem(val label: String, val icon: ImageVector)

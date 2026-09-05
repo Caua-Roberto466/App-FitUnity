@@ -8,6 +8,10 @@ int color white 0x0
 int drawable ic_fitunity_logo 0x0
 int drawable ic_launcher_background 0x0
 int drawable ic_launcher_foreground 0x0
+int drawable treino_flexoes 0x0
+int drawable treino_full_body 0x0
+int drawable treino_hiit 0x0
+int drawable treino_pernas_gluteos 0x0
 int drawable treino_personal 0x0
 int mipmap ic_launcher 0x0
 int mipmap ic_launcher_round 0x0
