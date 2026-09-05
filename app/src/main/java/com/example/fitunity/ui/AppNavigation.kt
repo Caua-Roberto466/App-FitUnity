@@ -20,8 +20,10 @@ import com.example.fitunity.ui.screens.FitUnityOnboardingScreen
 import com.example.fitunity.ui.screens.HomeScreen
 import com.example.fitunity.ui.screens.LoginScreen
 import com.example.fitunity.ui.screens.SplashScreen
+import com.example.fitunity.ui.screens.TreinoDetalheScreen
 import com.example.fitunity.ui.screens.TreinosScreen
 import com.example.fitunity.ui.screens.dietasExemplo
+import com.example.fitunity.ui.screens.treinosMock
 
 /**
  * Nomes das rotas usadas no NavHost.
@@ -36,8 +38,10 @@ object Rotas {
     const val TREINOS = "treinos"
     const val DIETA = "dieta"
     const val DIETA_DETALHE = "dieta_detalhe/{dietaId}"
+    const val TREINO_DETALHE = "treino_detalhe/{treinoId}"
 
     fun dietaDetalhe(dietaId: String) = "dieta_detalhe/$dietaId"
+    fun treinoDetalhe(treinoId: Int) = "treino_detalhe/$treinoId"
 }
 
 @Composable
@@ -151,7 +155,35 @@ fun AppNavigation() {
 
         // Lista de treinos (também acessível pela barra inferior)
         composable(Rotas.TREINOS) {
-            TreinosScreen(navController = navController)
+            TreinosScreen(
+                navController = navController,
+                onTreinoClick = { treinoId ->
+                    navController.navigate(Rotas.treinoDetalhe(treinoId))
+                }
+            )
+        }
+
+        // Detalhe de um treino específico
+        composable(
+            route = Rotas.TREINO_DETALHE,
+            arguments = listOf(navArgument("treinoId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val treinoId = backStackEntry.arguments?.getInt("treinoId") ?: -1
+            val treino = treinosMock.find { it.id == treinoId }
+
+            if (treino != null) {
+                TreinoDetalheScreen(
+                    treino = treino,
+                    onVoltarClick = { navController.popBackStack() },
+                    onIniciarTreinoClick = {
+                        // TODO: registrar o treino iniciado no perfil do usuário (ex.: via FitUnityDbHelper)
+                        navController.popBackStack()
+                    }
+                )
+            } else {
+                // Treino não encontrado (id inválido) -> volta para a lista
+                navController.popBackStack()
+            }
         }
 
         // Dieta (também acessível pela barra inferior)
