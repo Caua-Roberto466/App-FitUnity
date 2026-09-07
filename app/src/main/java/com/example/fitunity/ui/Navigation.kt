@@ -23,7 +23,20 @@ fun Navigation() {
             )
         }
         composable("onboarding") {
-            FitUnityOnboardingScreen()
+            FitUnityOnboardingScreen(
+                onComecarClick = { navController.navigate("cadastro") },
+                onJaTenhoContaClick = { navController.navigate("login") }
+            )
         }
+        composable("cadastro") {
+            CadastroScreen(
+                onCadastrarClick = { nome, email, dataNascimento, genero, senha ->
+                    // ex: FitUnityDbHelper(context).cadastrarUsuario(email, nome, dataNascimento, genero, senha)
+                    navController.navigate("login")
+                },
+                onJaTenhoContaClick = { navController.navigate("login") }
+            )
+        }
+        // composable("login") { LoginScreen(...) }
     }
 }

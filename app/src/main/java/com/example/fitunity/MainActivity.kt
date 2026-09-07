@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FitUnityTheme {
-                SplashScreen()
+                Navigation()
 //                val navController = rememberNavController()
 
 //                NavHost(navController = navController, startDestination = "treinos") {
