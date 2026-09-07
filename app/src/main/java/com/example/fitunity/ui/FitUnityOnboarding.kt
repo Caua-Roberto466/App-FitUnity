@@ -25,7 +25,7 @@ val FitUnityBlue = Color(0xFF009DF8)
 @Composable
 fun FitUnityOnboardingScreen(
     onComecarClick: () -> Unit = {},
-    onJaTenhoContaClick: () -> Unit = {}
+    onEntrarClick: () -> Unit = {}
 ) {
     Scaffold(
         topBar = { FitUnityTopBar() },
@@ -119,7 +119,7 @@ fun FitUnityOnboardingScreen(
 
             // Botão Já tenho uma conta
             OutlinedButton(
-                onClick = onJaTenhoContaClick,
+                onClick = onEntrarClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),

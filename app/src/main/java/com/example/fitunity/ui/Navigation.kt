@@ -25,7 +25,7 @@ fun Navigation() {
         composable("onboarding") {
             FitUnityOnboardingScreen(
                 onComecarClick = { navController.navigate("cadastro") },
-                onJaTenhoContaClick = { navController.navigate("login") }
+                onEntrarClick = { navController.navigate("login") }
             )
         }
         composable("cadastro") {
@@ -34,9 +34,22 @@ fun Navigation() {
                     // ex: FitUnityDbHelper(context).cadastrarUsuario(email, nome, dataNascimento, genero, senha)
                     navController.navigate("login")
                 },
-                onJaTenhoContaClick = { navController.navigate("login") }
+                onEntrarClick = { navController.navigate("login") }
             )
         }
-        // composable("login") { LoginScreen(...) }
+        composable("login") {
+            LoginScreen(
+                onEntrarClick = { email, senha ->
+                    // ex: validar/autenticar com FitUnityDbHelper e navegar para a tela principal
+                    // navController.navigate("home")
+                },
+                onEsqueceuSenhaClick = {
+                    // navController.navigate("recuperar_senha") // se você tiver essa tela
+                },
+                onCriarContaClick = {
+                    navController.navigate("cadastro")
+                }
+            )
+        }
     }
 }

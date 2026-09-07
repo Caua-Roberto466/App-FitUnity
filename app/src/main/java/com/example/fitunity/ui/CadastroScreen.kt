@@ -35,7 +35,7 @@ import com.example.fitunity.R
 @Composable
 fun CadastroScreen(
     onCadastrarClick: (nome: String, email: String, dataNascimento: String, genero: String, senha: String) -> Unit = { _, _, _, _, _ -> },
-    onJaTenhoContaClick: () -> Unit = {}
+    onEntrarClick: () -> Unit = {}
 ) {
     var nome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -243,7 +243,7 @@ fun CadastroScreen(
                     color = FitUnityBlue,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.clickable { onJaTenhoContaClick() }
+                    modifier = Modifier.clickable { onEntrarClick() }
                 )
             }
 
