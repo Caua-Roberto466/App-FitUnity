@@ -61,14 +61,19 @@ import androidx.compose.ui.res.painterResource
 val AzulFitUnity = Color(0xFF29B6F6)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TreinosScreen(onTreinoClick: (Int) -> Unit) {
+fun TreinosScreen(onTreinoClick: (Int) -> Unit, onPerfilClick: () -> Unit = {}) {
     var busca by remember { mutableStateOf("") }
     var nivelSelecionado by remember { mutableStateOf(Nivel.INICIANTE) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TreinoTopBar() },
-        bottomBar = { BottomNavBar() }
+        bottomBar = {
+            BottomNavBar(
+                selecionadoInicial = 1, // "Treino" fica destacado nesta tela
+                onItemClick = { label -> if (label == "Perfil") onPerfilClick() }
+            )
+        }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             OutlinedTextField(
@@ -239,14 +244,17 @@ private fun TreinoTopBar() {
     }
 }
 @Composable
-fun BottomNavBar() {
-    var selecionado by remember { mutableStateOf(1) }
+fun BottomNavBar(selecionadoInicial: Int = 1, onItemClick: (String) -> Unit = {}) {
+    var selecionado by remember { mutableStateOf(selecionadoInicial) }
 
     NavigationBar {
         navItems.forEachIndexed { index, item ->
             NavigationBarItem(
                 selected = selecionado == index,
-                onClick = { selecionado = index },
+                onClick = {
+                    selecionado = index
+                    onItemClick(item.label)
+                },
                 icon = { Icon(item.icon, contentDescription = item.label) },
                 label = { Text(item.label) }
             )

@@ -19,9 +19,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -118,9 +122,17 @@ fun CadastroScreen(
             CadastroField(
                 label = "Data de nascimento",
                 value = dataNascimento,
-                onValueChange = { dataNascimento = it },
+                onValueChange = { novoValor ->
+                    // Mantém só os números digitados (máx. 8: dd mm aaaa) e deixa
+                    // a formatação visual com as barras por conta do VisualTransformation
+                    val apenasDigitos = novoValor.filter { it.isDigit() }
+                    if (apenasDigitos.length <= 8) {
+                        dataNascimento = apenasDigitos
+                    }
+                },
                 placeholder = "dd/mm/aaaa",
-                keyboardType = KeyboardType.Number
+                keyboardType = KeyboardType.Number,
+                visualTransformation = DataNascimentoVisualTransformation()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -147,8 +159,8 @@ fun CadastroScreen(
                             unfocusedBorderColor = Color.LightGray,
                             focusedContainerColor = Color(0xFFF2F2F2),
                             unfocusedContainerColor = Color(0xFFF2F2F2),
-                            focusedTextColor = Color.Black ,
-                            unfocusedTextColor = FitUnityBlue,
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
                             cursorColor = FitUnityBlue
                         )
                     )
@@ -307,7 +319,8 @@ private fun CadastroField(
     placeholder: String,
     isPassword: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
-    imeAction: ImeAction = ImeAction.Next
+    imeAction: ImeAction = ImeAction.Next,
+    visualTransformation: VisualTransformation? = null
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(text = label, fontSize = 14.sp, color = Color.Black, fontWeight = FontWeight.Medium)
@@ -317,7 +330,8 @@ private fun CadastroField(
             onValueChange = onValueChange,
             placeholder = { Text(placeholder, color = Color.Gray) },
             singleLine = true,
-            visualTransformation = if (isPassword) PasswordVisualTransformation() else androidx.compose.ui.text.input.VisualTransformation.None,
+            visualTransformation = visualTransformation
+                ?: if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(
                 keyboardType = if (isPassword) KeyboardType.Password else keyboardType,
                 imeAction = imeAction
@@ -329,10 +343,44 @@ private fun CadastroField(
                 unfocusedBorderColor = Color.LightGray,
                 focusedContainerColor = Color(0xFFF2F2F2),
                 unfocusedContainerColor = Color(0xFFF2F2F2),
-                focusedTextColor = FitUnityBlue,
-                unfocusedTextColor = FitUnityBlue,
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
                 cursorColor = FitUnityBlue
             )
         )
+    }
+}
+
+// Formata a digitação da data de nascimento inserindo as barras automaticamente: dd/mm/aaaa
+private class DataNascimentoVisualTransformation : VisualTransformation {
+    override fun filter(text: AnnotatedString): TransformedText {
+        val digitos = if (text.text.length > 8) text.text.substring(0, 8) else text.text
+
+        val textoFormatado = buildString {
+            for (i in digitos.indices) {
+                append(digitos[i])
+                if (i == 1 || i == 3) append('/')
+            }
+        }
+
+        val offsetMapping = object : OffsetMapping {
+            override fun originalToTransformed(offset: Int): Int {
+                return when {
+                    offset <= 1 -> offset
+                    offset <= 3 -> offset + 1
+                    else -> offset + 2
+                }
+            }
+
+            override fun transformedToOriginal(offset: Int): Int {
+                return when {
+                    offset <= 2 -> offset
+                    offset <= 5 -> offset - 1
+                    else -> offset - 2
+                }.coerceIn(0, digitos.length)
+            }
+        }
+
+        return TransformedText(AnnotatedString(textoFormatado), offsetMapping)
     }
 }
