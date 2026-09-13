@@ -31,7 +31,7 @@ fun TreinoDetalheScreen(
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TreinoTopBar() },
+        topBar = { FitUnityTopBar("Treino") },
         containerColor = Color.White
     ) { padding ->
         Column(

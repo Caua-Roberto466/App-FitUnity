@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -119,7 +118,7 @@ fun DietaScreen(
     }
 
     Scaffold(
-        topBar = { DietaTopBar() },
+        topBar = { FitUnityTopBar(titulo = "Dieta") },
         bottomBar = { FitUnityBottomBar(navController) },
         containerColor = Color.White
     ) { padding ->
@@ -189,72 +188,6 @@ fun DietaScreen(
 }
 
 // ---------- Componentes ----------
-
-@Composable
- fun DietaTopBar(
-    onNotificationClick: () -> Unit = {},
-    onSettingsClick: () -> Unit = {}
- ) {
-    Column {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(horizontal = 16.dp)
-                .padding(top = 42.dp, bottom = 8.dp)
-        ) {
-            Row(
-                modifier = Modifier.align(Alignment.CenterStart),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_fitunity_logo),
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp)
-                )
-                Spacer(modifier = Modifier.width(5.dp))
-                Text(
-                    text = "FitUnity",
-                    color = FitUnityBlue,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-
-            Text(
-                text = "Dieta",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                modifier = Modifier.align(Alignment.Center)
-            )
-
-            Row(
-                modifier = Modifier.align(Alignment.CenterEnd),
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Notifications,
-                    contentDescription = "Notificações",
-                    tint = FitUnityBlue,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(CircleShape)
-                )
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = "Configurações",
-                    tint = FitUnityBlue,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(CircleShape)
-                )
-            }
-        }
-        HorizontalDivider(color = FitUnityBlue.copy(alpha = 0.3f), thickness = 1.dp)
-    }
-}
 
 @Composable
 private fun SearchBar(value: String, onValueChange: (String) -> Unit) {

@@ -10,8 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -57,7 +55,8 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            HomeTopBar(
+            FitUnityTopBar(
+                titulo = "Início",
                 onNotificationClick = { /* TODO: tela de notificações */ },
                 onSettingsClick = { /* TODO: tela de configurações */ }
             )
@@ -156,7 +155,9 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 treinosHoje.forEach { treino ->
                     TreinoResumoCard(
                         treino = treino,
@@ -179,7 +180,8 @@ fun HomeScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFBFBFBFB)),
+//                colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -207,79 +209,12 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeTopBar(
-    onNotificationClick: () -> Unit = {},
-    onSettingsClick: () -> Unit = {}
-) {
-    Column {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(horizontal = 16.dp)
-                .padding(top = 42.dp, bottom = 8.dp)
-        ) {
-            Row(
-                modifier = Modifier.align(Alignment.CenterStart),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_fitunity_logo),
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp)
-                )
-                Spacer(modifier = Modifier.width(5.dp))
-                Text(
-                    text = "FitUnity",
-                    color = FitUnityBlue,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-
-            Text(
-                text = "Início",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                modifier = Modifier.align(Alignment.Center)
-            )
-
-            Row(
-                modifier = Modifier.align(Alignment.CenterEnd),
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Notifications,
-                    contentDescription = "Notificações",
-                    tint = FitUnityBlue,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(CircleShape)
-                )
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = "Configurações",
-                    tint = FitUnityBlue,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(CircleShape)
-                )
-            }
-        }
-        HorizontalDivider(color = FitUnityBlue.copy(alpha = 0.3f), thickness = 1.dp)
-    }
-}
-
-@Composable
 private fun TreinoResumoCard(treino: TreinoResumo, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(14.dp)),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xF5F5F5F5)),
         onClick = onClick
     ) {
         Row(
@@ -296,12 +231,7 @@ private fun TreinoResumoCard(treino: TreinoResumo, onClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = treino.nome,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black
-                )
+                Text(text = treino.nome, fontSize = 15.sp, fontWeight = FontWeight.Medium, color = Color.Black)
                 Text(text = treino.detalhe, fontSize = 13.sp, color = Color.Gray)
             }
             Icon(
@@ -315,10 +245,7 @@ private fun TreinoResumoCard(treino: TreinoResumo, onClick: () -> Unit) {
 
 @Composable
 private fun CarouselDots(total: Int, selecionado: Int) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
         repeat(total) { i ->
             Box(
                 modifier = Modifier

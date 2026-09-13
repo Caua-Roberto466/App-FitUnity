@@ -28,7 +28,7 @@ enum class BottomNavItem(val rota: String, val label: String, val icon: ImageVec
     INICIO(Rotas.HOME, "Início", Icons.Filled.Home, true),
     TREINO(Rotas.TREINOS, "Treino", Icons.Filled.DirectionsRun, true),
     DIETA(Rotas.DIETA, "Dieta", Icons.Filled.Favorite, true),
-    PERFIL("perfil", "Perfil", Icons.Filled.Person, false),
+    PERFIL(Rotas.PERFIL, "Perfil", Icons.Filled.Person, true),
     MAIS("mais", "Mais", Icons.Filled.MoreHoriz, false)
 }
 

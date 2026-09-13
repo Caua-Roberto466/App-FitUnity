@@ -1,6 +1,7 @@
 package com.example.fitunity.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import com.example.fitunity.ui.screens.DietaScreen
 import com.example.fitunity.ui.screens.FitUnityOnboardingScreen
 import com.example.fitunity.ui.screens.HomeScreen
 import com.example.fitunity.ui.screens.LoginScreen
+import com.example.fitunity.ui.screens.PerfilScreen
 import com.example.fitunity.ui.screens.SplashScreen
 import com.example.fitunity.ui.screens.TreinoDetalheScreen
 import com.example.fitunity.ui.screens.TreinosScreen
@@ -37,6 +39,7 @@ object Rotas {
     const val HOME = "home"
     const val TREINOS = "treinos"
     const val DIETA = "dieta"
+    const val PERFIL = "perfil"
     const val DIETA_DETALHE = "dieta_detalhe/{dietaId}"
     const val TREINO_DETALHE = "treino_detalhe/{treinoId}"
 
@@ -53,12 +56,26 @@ fun AppNavigation() {
         startDestination = Rotas.SPLASH
     ) {
 
-        // Splash -> Onboarding (remove o splash da pilha para o botão "voltar" não abrir de novo)
+        // Splash -> verifica se há uma sessão salva (login automático) antes de decidir
+        // se vai direto para a Home ou para o Onboarding
         composable(Rotas.SPLASH) {
+            val context = LocalContext.current
+            val dbHelper = remember { FitUnityDbHelper(context) }
+
             SplashScreen(
                 onSplashFinished = {
-                    navController.navigate(Rotas.ONBOARDING) {
-                        popUpTo(Rotas.SPLASH) { inclusive = true }
+                    val usuarioIdSalvo = SessionManager.usuarioIdSalvo(context)
+                    val perfilSalvo = usuarioIdSalvo?.let { dbHelper.buscarPerfilPorId(it) }
+
+                    if (perfilSalvo != null) {
+                        SessionManager.login(perfilSalvo)
+                        navController.navigate(Rotas.HOME) {
+                            popUpTo(Rotas.SPLASH) { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate(Rotas.ONBOARDING) {
+                            popUpTo(Rotas.SPLASH) { inclusive = true }
+                        }
                     }
                 }
             )
@@ -91,7 +108,7 @@ fun AppNavigation() {
                         val perfil = dbHelper.autenticarUsuario(email, senha)
                         if (perfil != null) {
                             erro = null
-                            SessionManager.login(perfil)
+                            SessionManager.login(perfil, context)
                             navController.navigate(Rotas.HOME) {
                                 popUpTo(Rotas.SPLASH) { inclusive = true }
                             }
@@ -119,24 +136,22 @@ fun AppNavigation() {
 
             CadastroScreen(
                 erro = erro,
-                onCadastrarClick = { nome, email, senha ->
-                    if (nome.isBlank() || email.isBlank() || senha.isBlank()) {
-                        erro = "Preencha todos os campos"
+                onCadastrarClick = { nome, email, dataNascimento, genero, senha ->
+                    val idGerado = dbHelper.cadastrarUsuario(
+                        nome = nome,
+                        email = email,
+                        senha = senha,
+                        dataNascimento = dataNascimento,
+                        genero = genero
+                    )
+                    if (idGerado == -1L) {
+                        erro = "Este e-mail já está cadastrado"
                     } else {
-                        val idGerado = dbHelper.cadastrarUsuario(
-                            nome = nome,
-                            email = email,
-                            senha = senha
-                        )
-                        if (idGerado == -1L) {
-                            erro = "Este e-mail já está cadastrado"
-                        } else {
-                            erro = null
-                            val perfil = dbHelper.buscarPerfilPorId(idGerado)
-                            perfil?.let { SessionManager.login(it) }
-                            navController.navigate(Rotas.HOME) {
-                                popUpTo(Rotas.SPLASH) { inclusive = true }
-                            }
+                        erro = null
+                        val perfil = dbHelper.buscarPerfilPorId(idGerado)
+                        perfil?.let { SessionManager.login(it, context) }
+                        navController.navigate(Rotas.HOME) {
+                            popUpTo(Rotas.SPLASH) { inclusive = true }
                         }
                     }
                 },
@@ -151,6 +166,37 @@ fun AppNavigation() {
         // Painel principal — lê o usuário logado via SessionManager
         composable(Rotas.HOME) {
             HomeScreen(navController = navController)
+        }
+
+        // Perfil do usuário logado
+        composable(Rotas.PERFIL) {
+            val context = LocalContext.current
+            val perfil = SessionManager.usuarioAtual.value
+
+            if (perfil != null) {
+                PerfilScreen(
+                    navController = navController,
+                    perfil = perfil,
+                    onEditarDadosClick = { /* TODO: tela de edição de dados */ },
+                    onAssinaturaClick = { /* TODO: tela de assinatura */ },
+                    onNotificacoesClick = { /* TODO: tela de notificações */ },
+                    onAjudaClick = { /* TODO: tela de ajuda */ },
+                    onSairClick = {
+                        SessionManager.logout(context)
+                        navController.navigate(Rotas.LOGIN) {
+                            popUpTo(Rotas.SPLASH) { inclusive = true }
+                        }
+                    },
+                    onVerPlanoClick = { navController.navigate(Rotas.TREINOS) }
+                )
+            } else {
+                // Sem sessão ativa -> manda para o login
+                LaunchedEffect(Unit) {
+                    navController.navigate(Rotas.LOGIN) {
+                        popUpTo(Rotas.SPLASH) { inclusive = true }
+                    }
+                }
+            }
         }
 
         // Lista de treinos (também acessível pela barra inferior)

@@ -290,7 +290,7 @@ fun DietaDetalheScreen(
     onIniciarDietaClick: () -> Unit = {}
 ) {
     Scaffold(
-        topBar = { DietaTopBar() },
+        topBar = { FitUnityTopBar(titulo = "Dieta") },
         containerColor = Color.White
     ) { padding ->
         LazyColumn(
