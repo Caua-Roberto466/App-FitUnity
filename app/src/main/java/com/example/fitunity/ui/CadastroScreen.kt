@@ -1,4 +1,4 @@
-package com.example.fitunity.ui
+package com.example.fitunity.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,8 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
@@ -31,15 +31,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitunity.R
 
-// onCadastrarClick recebe os dados preenchidos e deve chamar, por exemplo:
-// FitUnityDbHelper(context).cadastrarUsuario(email, nome, dataNascimento, genero, senha)
-//
-// onJaTenhoContaClick -> deve navegar de volta para a tela de login
+// onCadastrarClick recebe (nome, email, dataNascimento, genero, senha) já validados
+// localmente -> deve chamar o FitUnityDbHelper.cadastrarUsuario(...) e navegar
+// onJaTenhoContaClick -> deve levar para a tela de LOGIN
+// erro -> mensagem vinda de fora (ex.: "e-mail já cadastrado", checado no banco);
+// mostrada junto com os erros de validação local (campos vazios, senhas diferentes etc.)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CadastroScreen(
+    erro: String? = null,
     onCadastrarClick: (nome: String, email: String, dataNascimento: String, genero: String, senha: String) -> Unit = { _, _, _, _, _ -> },
-    onEntrarClick: () -> Unit = {}
+    onJaTenhoContaClick: () -> Unit = {}
 ) {
     var nome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -51,7 +53,8 @@ fun CadastroScreen(
     var generoExpanded by remember { mutableStateOf(false) }
     val generos = listOf("Masculino", "Feminino", "Outro")
 
-    var erro by remember { mutableStateOf<String?>(null) }
+    var erroLocal by remember { mutableStateOf<String?>(null) }
+    val mensagemErro = erroLocal ?: erro
 
     Scaffold(
         topBar = { CadastroTopBar() },
@@ -202,7 +205,7 @@ fun CadastroScreen(
                 imeAction = ImeAction.Done
             )
 
-            erro?.let {
+            mensagemErro?.let {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(text = it, color = Color.Red, fontSize = 13.sp, textAlign = TextAlign.Center)
             }
@@ -212,14 +215,14 @@ fun CadastroScreen(
             // Botão Cadastrar
             Button(
                 onClick = {
-                    erro = when {
+                    erroLocal = when {
                         nome.isBlank() || email.isBlank() || dataNascimento.isBlank() ||
                                 genero.isBlank() || senha.isBlank() -> "Preencha todos os campos"
                         senha != confirmarSenha -> "As senhas não coincidem"
                         senha.length < 6 -> "A senha deve ter no mínimo 6 caracteres"
                         else -> null
                     }
-                    if (erro == null) {
+                    if (erroLocal == null) {
                         onCadastrarClick(nome, email, dataNascimento, genero, senha)
                     }
                 },
@@ -255,7 +258,7 @@ fun CadastroScreen(
                     color = FitUnityBlue,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.clickable { onEntrarClick() }
+                    modifier = Modifier.clickable { onJaTenhoContaClick() }
                 )
             }
 

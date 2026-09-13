@@ -1,4 +1,4 @@
-package com.example.fitunity.ui
+package com.example.fitunity.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,7 +41,7 @@ fun SplashScreen(
     onSplashFinished: () -> Unit = {}
 ) {
     LaunchedEffect(Unit) {
-        delay(2800)
+        delay(1800)
         onSplashFinished()
     }
 

@@ -1,79 +1,109 @@
-package com.example.fitunity.ui
+package com.example.fitunity.ui.screens
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavController
 import com.example.fitunity.R
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 
-val AzulFitUnity = Color(0xFF29B6F6)
+// ---------- Modelo de dados ----------
+
+data class Treino(
+    val id: Int,
+    val titulo: String,
+    val categoria: String,
+    val duracaoMin: Int,
+    val nivel: Nivel,
+    val imagemRes: Int
+)
+
+enum class Nivel(val label: String) {
+    INICIANTE("Iniciante"),
+    INTERMEDIARIO("Intermediario"),
+    AVANCADO("Avancado"),
+    EM_CASA("Em casa")
+}
+
+// Lista de exemplo — troque/complemente com seus treinos reais
+val treinosMock = listOf(
+    Treino(
+        1,
+        "Treino Full body",
+        "Força/resistência",
+        40,
+        Nivel.INICIANTE,
+        R.drawable.treino_full_body
+    ),
+    Treino(
+        2,
+        "Treino pernas e Glúteos",
+        "Força/resistência",
+        50,
+        Nivel.INICIANTE,
+        R.drawable.treino_pernas_gluteos
+    ),
+    Treino(
+        3,
+        "Treino HIIT Queima Gordura",
+        "Cardio/resistência",
+        30,
+        Nivel.INICIANTE,
+        R.drawable.treino_hiit
+    ),
+    Treino(
+        4,
+        "Treino de Flexões",
+        "Cardio/resistência",
+        30,
+        Nivel.INTERMEDIARIO,
+        R.drawable.treino_flexoes
+    )
+)
+
+// ---------- Tela principal ----------
+
+// onTreinoClick(treinoId) -> deve navegar para a tela de detalhes daquele treino
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TreinosScreen(onTreinoClick: (Int) -> Unit, onPerfilClick: () -> Unit = {}) {
+fun TreinosScreen(
+    navController: NavController,
+    treinos: List<Treino> = treinosMock,
+    onTreinoClick: (Int) -> Unit = {}
+) {
     var busca by remember { mutableStateOf("") }
     var nivelSelecionado by remember { mutableStateOf(Nivel.INICIANTE) }
 
+    val treinosFiltrados = treinos.filter { treino ->
+        treino.nivel == nivelSelecionado &&
+                (busca.isBlank() || treino.titulo.contains(busca, ignoreCase = true))
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TreinoTopBar() },
-        bottomBar = {
-            BottomNavBar(
-                selecionadoInicial = 1, // "Treino" fica destacado nesta tela
-                onItemClick = { label -> if (label == "Perfil") onPerfilClick() }
-            )
-        }
+        topBar = { FitUnityTopBar(titulo = "Treino") },
+        bottomBar = { FitUnityBottomBar(navController) },
+        containerColor = Color.White
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             OutlinedTextField(
@@ -81,15 +111,16 @@ fun TreinosScreen(onTreinoClick: (Int) -> Unit, onPerfilClick: () -> Unit = {}) 
                 onValueChange = { busca = it },
                 placeholder = { Text("Buscar Treino...") },
                 leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(16.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = FitUnityBlue,
+                    cursorColor = FitUnityBlue
+                )
             )
-
-            val treinosFiltrados = treinosMock.filter { treino ->
-                treino.nivel == nivelSelecionado &&
-                        (busca.isBlank() || treino.titulo.contains(busca, ignoreCase = true))
-            }
 
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 16.dp),
@@ -101,34 +132,54 @@ fun TreinosScreen(onTreinoClick: (Int) -> Unit, onPerfilClick: () -> Unit = {}) 
                         onClick = { nivelSelecionado = nivel },
                         label = { Text(nivel.label) },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = AzulFitUnity,
+                            selectedContainerColor = FitUnityBlue,
                             selectedLabelColor = Color.White
                         )
                     )
                 }
             }
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(treinosFiltrados) { treino ->
-                    TreinoCard(
-                        treino = treino,
-                        onVerClick = { onTreinoClick(treino.id) }
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (treinosFiltrados.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 48.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Nenhum treino encontrado para esse nível",
+                        color = Color.Gray,
+                        fontSize = 15.sp
                     )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(treinosFiltrados) { treino ->
+                        TreinoCard(
+                            treino = treino,
+                            onVerClick = { onTreinoClick(treino.id) }
+                        )
+                    }
                 }
             }
         }
     }
 }
 
+// ---------- Componentes ----------
+
 @Composable
-fun TreinoCard(treino: Treino, onVerClick: () -> Unit){
+private fun TreinoCard(treino: Treino, onVerClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFBFBFBFB)),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -143,7 +194,6 @@ fun TreinoCard(treino: Treino, onVerClick: () -> Unit){
                     .size(80.dp)
                     .clip(RoundedCornerShape(12.dp))
             )
-            // <- Box fecha aqui, sem chaves { } abrindo nada dentro
 
             Spacer(modifier = Modifier.width(12.dp))
 
@@ -151,7 +201,7 @@ fun TreinoCard(treino: Treino, onVerClick: () -> Unit){
                 Text(
                     text = treino.titulo,
                     fontWeight = FontWeight.Bold,
-                    color = AzulFitUnity
+                    color = FitUnityBlue
                 )
                 Text(
                     text = "${treino.categoria} • ${treino.duracaoMin} min • ${treino.nivel.label}",
@@ -166,7 +216,7 @@ fun TreinoCard(treino: Treino, onVerClick: () -> Unit){
                 Button(
                     onClick = onVerClick,
                     modifier = Modifier.align(Alignment.End),
-                    colors = ButtonDefaults.buttonColors(containerColor = AzulFitUnity)
+                    colors = ButtonDefaults.buttonColors(containerColor = FitUnityBlue)
                 ) {
                     Text("Ver", color = Color.White)
                 }
@@ -175,122 +225,4 @@ fun TreinoCard(treino: Treino, onVerClick: () -> Unit){
     }
 }
 
-@Composable
-private fun TreinoTopBar() {
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(horizontal = 16.dp)
-                .padding(top = 32.dp, bottom = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_fitunity_logo),
-                    contentDescription = null,
-                    modifier = Modifier.size(26.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "FitUnity", color = FitUnityBlue, fontSize = 15.sp, fontWeight = FontWeight.Medium)
-            }
 
-            Text(
-                text = "Dieta",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                modifier = Modifier.weight(1f),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-            )
-
-            Row(
-                modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box {
-                    Icon(
-                        imageVector = Icons.Filled.Notifications,
-                        contentDescription = "Notificações",
-                        tint = Color.Black,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .size(14.dp)
-                            .clip(CircleShape)
-                            .background(FitUnityBlue),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "1+", color = Color.White, fontSize = 8.sp)
-                    }
-                }
-                Spacer(modifier = Modifier.width(14.dp))
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = "Configurações",
-                    tint = Color.Black,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        }
-        HorizontalDivider(color = FitUnityBlue.copy(alpha = 0.3f), thickness = 1.dp)
-    }
-}
-@Composable
-fun BottomNavBar(selecionadoInicial: Int = 1, onItemClick: (String) -> Unit = {}) {
-    var selecionado by remember { mutableStateOf(selecionadoInicial) }
-
-    NavigationBar {
-        navItems.forEachIndexed { index, item ->
-            NavigationBarItem(
-                selected = selecionado == index,
-                onClick = {
-                    selecionado = index
-                    onItemClick(item.label)
-                },
-                icon = { Icon(item.icon, contentDescription = item.label) },
-                label = { Text(item.label) }
-            )
-        }
-    }
-}
-
-data class Treino(
-    val id: Int,
-    val titulo: String,
-    val categoria: String,
-    val duracaoMin: Int,
-    val nivel: Nivel,
-    val imagemRes: Int
-)
-
-val treinosMock = listOf(
-    Treino(1, "Treino Full body", "Força/resistência", 40, Nivel.INICIANTE, R.drawable.treino_full_body),
-    Treino(2, "Treino pernas e Glúteos", "Força/resistência", 50, Nivel.INICIANTE, R.drawable.treino_pernas_gluteos),
-    Treino(3, "Treino HIIT Queima Gordura", "Cardio/resistência", 30, Nivel.INICIANTE, R.drawable.treino_hiit),
-    Treino(4, "Treino de Flexões", "Cardio/resistência", 30, Nivel.INTERMEDIARIO, R.drawable.treino_flexoes)
-)
-
-data class NavItem(val label: String, val icon: ImageVector)
-
-enum class Nivel(val label: String) {
-    INICIANTE("Iniciante"),
-    INTERMEDIARIO("Intermediario"),
-    AVANCADO("Avancado"),
-    EM_CASA("Em casa")
-}
-
-val navItems = listOf(
-    NavItem("Inicio", Icons.Filled.Home),
-    NavItem("Treino", Icons.Filled.Search),
-    NavItem("Dieta", Icons.Filled.Favorite),
-    NavItem("Perfil", Icons.Filled.Person),
-    NavItem("Mais", Icons.Filled.MoreVert)
-)

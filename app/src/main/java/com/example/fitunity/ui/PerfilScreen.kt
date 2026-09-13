@@ -1,10 +1,12 @@
-package com.example.fitunity.ui
+package com.example.fitunity.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Info
@@ -12,14 +14,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,38 +24,33 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.fitunity.data.PerfilCliente
 
-// Tela de Perfil — apenas EXIBE os dados recebidos em "perfil".
-// Quem busca no banco é a Navigation.kt, chamando
-// FitUnityDbHelper(context).obterPerfilCliente(usuarioId) e passando o resultado pra cá.
-// Por enquanto o foco é o funcionamento (puxar os dados certos); o visual pode ser
-// refinado depois para ficar igual ao protótipo.
+// onEditarDadosClick / onAssinaturaClick / onNotificacoesClick / onAjudaClick -> ainda sem
+// tela própria (TODO); onSairClick -> deve encerrar a sessão (SessionManager.logout())
+// e voltar para o Login; onVerPlanoClick -> leva para a lista de treinos.
 @Composable
 fun PerfilScreen(
+    navController: NavController,
     perfil: PerfilCliente,
     onEditarDadosClick: () -> Unit = {},
     onAssinaturaClick: () -> Unit = {},
     onNotificacoesClick: () -> Unit = {},
     onAjudaClick: () -> Unit = {},
     onSairClick: () -> Unit = {},
-    onVerPlanoClick: () -> Unit = {},
-    onVoltarClick: () -> Unit = {}
+    onVerPlanoClick: () -> Unit = {}
 ) {
     Scaffold(
-        topBar = { PerfilTopBar() },
-        bottomBar = {
-            BottomNavBar(
-                selecionadoInicial = 3, // índice de "Perfil" em navItems
-                onItemClick = { label -> if (label != "Perfil") onVoltarClick() }
-            )
-        },
+        topBar = { FitUnityTopBar(titulo = "Meu perfil") },
+        bottomBar = { FitUnityBottomBar(navController) },
         containerColor = Color.White
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(16.dp))
@@ -69,7 +59,7 @@ fun PerfilScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+                colors = CardDefaults.cardColors(containerColor = Color(0xF5F5F5F5))
             ) {
                 Column(
                     modifier = Modifier
@@ -88,7 +78,7 @@ fun PerfilScreen(
                             imageVector = Icons.Filled.Person,
                             contentDescription = null,
                             tint = FitUnityBlue,
-                            modifier = Modifier.size(48.dp)
+                            modifier = Modifier.size(58.dp)
                         )
                     }
 
@@ -120,7 +110,7 @@ fun PerfilScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+                colors = CardDefaults.cardColors(containerColor = Color(0xF5F5F5F5))
             ) {
                 Row(
                     modifier = Modifier
@@ -140,7 +130,7 @@ fun PerfilScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+                colors = CardDefaults.cardColors(containerColor = Color(0xF5F5F5F5))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
@@ -164,7 +154,7 @@ fun PerfilScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+                colors = CardDefaults.cardColors(containerColor = Color(0xF5F5F5F5))
             ) {
                 Column {
                     PerfilOpcao(icon = Icons.Filled.Person, texto = "Editar Dados", onClick = onEditarDadosClick)
@@ -221,25 +211,4 @@ private fun PerfilOpcao(icon: ImageVector, texto: String, onClick: () -> Unit) {
     }
 }
 
-@Composable
-private fun PerfilTopBar() {
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(horizontal = 16.dp)
-                .padding(top = 32.dp, bottom = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Meu perfil",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                modifier = Modifier.weight(1f)
-            )
-        }
-        HorizontalDivider(color = FitUnityBlue.copy(alpha = 0.3f), thickness = 1.dp)
-    }
-}
+

@@ -1,4 +1,4 @@
-package com.example.fitunity.ui
+package com.example.fitunity.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -290,6 +290,7 @@ fun DietaDetalheScreen(
     onIniciarDietaClick: () -> Unit = {}
 ) {
     Scaffold(
+        topBar = { FitUnityTopBar(titulo = "Dieta") },
         containerColor = Color.White
     ) { padding ->
         LazyColumn(

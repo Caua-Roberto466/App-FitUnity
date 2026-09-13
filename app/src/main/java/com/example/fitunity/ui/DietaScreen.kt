@@ -1,4 +1,4 @@
-package com.example.fitunity.ui
+package com.example.fitunity.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -25,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.fitunity.R
 
 // ---------- Modelo de dados ----------
@@ -46,7 +46,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta que te faz perder peso apenas comendo frutas e legumes, junto de alimentos base de uma refeição, como arroz e feijão",
         categoria = "Perder peso",
         pessoasFizeram = 98756,
-        imagemRes = R.drawable.ic_fitunity_logo
+        imagemRes = R.drawable.dieta_frutas_legumes
     ),
     Dieta(
         id = "2",
@@ -54,7 +54,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta para aqueles que gostam de saborear uma boa carne, mas que querem perder peso. E tudo isso essa dieta oferece",
         categoria = "Perder peso",
         pessoasFizeram = 106457,
-        imagemRes = R.drawable.ic_fitunity_logo
+        imagemRes = R.drawable.dieta_carnes
     ),
     Dieta(
         id = "3",
@@ -62,7 +62,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta que te faz perder peso apenas comendo frutas e legumes, junto de alimentos base de uma refeição, como arroz e feijão",
         categoria = "Perder peso",
         pessoasFizeram = 506246,
-        imagemRes = R.drawable.ic_fitunity_logo
+        imagemRes = R.drawable.dieta_populares
     ),
     Dieta(
         id = "4",
@@ -70,7 +70,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta rica em proteínas magras para ajudar no ganho de massa muscular de forma saudável",
         categoria = "Ganhar massa",
         pessoasFizeram = 45210,
-        imagemRes = R.drawable.ic_fitunity_logo
+        imagemRes = R.drawable.dieta_proteina
     ),
     Dieta(
         id = "5",
@@ -78,7 +78,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta 100% vegana, com todos os nutrientes necessários para o dia a dia",
         categoria = "Vegana",
         pessoasFizeram = 32890,
-        imagemRes = R.drawable.ic_fitunity_logo
+        imagemRes = R.drawable.dieta_vegana
     ),
     Dieta(
         id = "6",
@@ -86,7 +86,7 @@ val dietasExemplo = listOf(
         descricao = "Uma dieta livre de glúten, ideal para quem tem intolerância ou sensibilidade",
         categoria = "Zero Glúten",
         pessoasFizeram = 18430,
-        imagemRes = R.drawable.ic_fitunity_logo
+        imagemRes = R.drawable.dieta_zero_gluten
     )
 )
 
@@ -94,15 +94,15 @@ private val categorias = listOf("Perder peso", "Ganhar massa", "Vegana", "Zero G
 
 // ---------- Tela principal ----------
 
-// onVerDietaClick(dietaId) -> deve navegar para a tela de detalhes daquela dieta
-// onNavItemClick(rota) -> deve navegar para a tela correspondente do bottom nav
+// onVerDietaClick(dietaId) -> deve navegar para a tela de detalhes daquela dieta (TODO: ainda não existe)
+// onInfoClick(dietaId) -> deve abrir mais informações daquela dieta (TODO: ainda não existe)
+// A navegação do bottom nav é feita pelo FitUnityBottomBar, reutilizado das outras telas.
 @Composable
 fun DietaScreen(
+    navController: NavController,
     dietas: List<Dieta> = dietasExemplo,
     onVerDietaClick: (String) -> Unit = {},
-    onInfoClick: (String) -> Unit = {},
-    onNavItemClick: (String) -> Unit = {},
-    navController: Unit
+    onInfoClick: (String) -> Unit = {}
 ) {
     var searchText by remember { mutableStateOf("") }
     var categoriaSelecionada by remember { mutableStateOf(categorias.first()) }
@@ -118,13 +118,8 @@ fun DietaScreen(
     }
 
     Scaffold(
-        topBar = { DietaTopBar() },
-        bottomBar = {
-            DietaBottomNav(
-                itemSelecionado = "Dieta",
-                onItemClick = onNavItemClick
-            )
-        },
+        topBar = { FitUnityTopBar(titulo = "Dieta") },
+        bottomBar = { FitUnityBottomBar(navController) },
         containerColor = Color.White
     ) { padding ->
         LazyColumn(
@@ -193,75 +188,6 @@ fun DietaScreen(
 }
 
 // ---------- Componentes ----------
-
-@Composable
-private fun DietaTopBar() {
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(horizontal = 16.dp)
-                .padding(top = 32.dp, bottom = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_fitunity_logo),
-                    contentDescription = null,
-                    modifier = Modifier.size(26.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "FitUnity", color = FitUnityBlue, fontSize = 15.sp, fontWeight = FontWeight.Medium)
-            }
-
-            Text(
-                text = "Dieta",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                modifier = Modifier.weight(1f),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-            )
-
-            Row(
-                modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box {
-                    Icon(
-                        imageVector = Icons.Filled.Notifications,
-                        contentDescription = "Notificações",
-                        tint = Color.Black,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .size(14.dp)
-                            .clip(CircleShape)
-                            .background(FitUnityBlue),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "1+", color = Color.White, fontSize = 8.sp)
-                    }
-                }
-                Spacer(modifier = Modifier.width(14.dp))
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = "Configurações",
-                    tint = Color.Black,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        }
-        HorizontalDivider(color = FitUnityBlue.copy(alpha = 0.3f), thickness = 1.dp)
-    }
-}
 
 @Composable
 private fun SearchBar(value: String, onValueChange: (String) -> Unit) {
@@ -395,50 +321,3 @@ private fun DietaCard(
 fun formatarNumero(numero: Int): String {
     return "%,d".format(numero).replace(",", ".")
 }
-
-// ---------- Bottom Navigation ----------
-
-@Composable
-private fun DietaBottomNav(itemSelecionado: String, onItemClick: (String) -> Unit) {
-    data class NavItem(val label: String, val icon: androidx.compose.ui.graphics.vector.ImageVector)
-
-    val itens = listOf(
-        NavItem("Inicio", Icons.Filled.Home),
-        NavItem("Treino", Icons.Filled.DirectionsRun),
-        NavItem("Dieta", Icons.Filled.Favorite),
-        NavItem("Perfil", Icons.Filled.Person),
-        NavItem("Mais", Icons.Filled.MoreHoriz)
-    )
-
-    Column {
-        HorizontalDivider(color = FitUnityBlue.copy(alpha = 0.3f), thickness = 1.dp)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(vertical = 10.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            itens.forEach { item ->
-                val selecionado = item.label == itemSelecionado
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.clickable { onItemClick(item.label) }
-                ) {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.label,
-                        tint = if (selecionado) FitUnityBlue else Color.Black,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = item.label,
-                        fontSize = 11.sp,
-                        color = if (selecionado) FitUnityBlue else Color.Black
-                    )
-                }
-            }
-        }
-    } // fecha Column externa
-} // fecha fun DietaBottomNav

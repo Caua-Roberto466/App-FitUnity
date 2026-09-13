@@ -1,4 +1,4 @@
-package com.example.fitunity.ui
+package com.example.fitunity.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -26,16 +26,19 @@ import com.example.fitunity.R
 // onEntrarClick recebe (email, senha) -> validar/autenticar e navegar para a tela principal
 // onEsqueceuSenhaClick -> deve levar para a tela de recuperação de senha
 // onCriarContaClick -> deve levar de volta para a tela de CADASTRO
+// erro -> mensagem a ser exibida (ex.: "e-mail ou senha incorretos"); null quando não há erro
 //
 // Exemplo de uso com Navigation Compose:
 //
 // LoginScreen(
+//     erro = erro,
 //     onEntrarClick = { email, senha -> viewModel.login(email, senha) },
 //     onEsqueceuSenhaClick = { navController.navigate("recuperar_senha") },
 //     onCriarContaClick = { navController.navigate("cadastro") }
 // )
 @Composable
 fun LoginScreen(
+    erro: String? = null,
     onEntrarClick: (String, String) -> Unit = { _, _ -> },
     onEsqueceuSenhaClick: () -> Unit = {},
     onCriarContaClick: () -> Unit = {}
@@ -62,13 +65,13 @@ fun LoginScreen(
                 Image(
                     painter = painterResource(id = R.drawable.ic_fitunity_logo),
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(60.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(text = "FitUnity", color = FitUnityBlue, fontSize = 22.sp, fontWeight = FontWeight.Medium)
             }
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             Text(
                 text = "Bem-vindo de volta",
@@ -149,6 +152,17 @@ fun LoginScreen(
             }
 
             Spacer(modifier = Modifier.height(32.dp))
+
+            if (erro != null) {
+                Text(
+                    text = erro,
+                    color = Color.Red,
+                    fontSize = 13.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
             // Botão Entrar
             Button(
