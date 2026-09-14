@@ -240,7 +240,7 @@ fun CadastroScreen(
                 Image(
                     painter = painterResource(id = R.drawable.ic_fitunity_logo),
                     contentDescription = null,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(34.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(text = "FitUnity", color = FitUnityBlue, fontSize = 16.sp, fontWeight = FontWeight.Medium)
@@ -282,10 +282,10 @@ private fun CadastroTopBar() {
             Image(
                 painter = painterResource(id = R.drawable.ic_fitunity_logo),
                 contentDescription = null,
-                modifier = Modifier.size(26.dp)
+                modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(4.dp))
-            Text(text = "FitUnity", color = FitUnityBlue, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            Text(text = "FitUnity", color = FitUnityBlue, fontSize = 17.sp, fontWeight = FontWeight.Medium)
         }
 
         Text(

@@ -65,7 +65,7 @@ fun LoginScreen(
                 Image(
                     painter = painterResource(id = R.drawable.ic_fitunity_logo),
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(text = "FitUnity", color = FitUnityBlue, fontSize = 22.sp, fontWeight = FontWeight.Medium)

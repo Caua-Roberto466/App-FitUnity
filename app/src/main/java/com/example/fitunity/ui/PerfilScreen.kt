@@ -329,9 +329,17 @@ fun PerfilScreen(
                 colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
             ) {
                 Column {
-                    PerfilOpcao(icon = Icons.Filled.Person, texto = "Editar Dados", onClick = onEditarDadosClick)
+                    PerfilOpcao(
+                        icon = Icons.Filled.Person,
+                        texto = "Editar Dados",
+                        onClick = onEditarDadosClick
+                    )
                     HorizontalDivider(color = Color(0xFFE0E0E0))
-                    PerfilOpcao(icon = Icons.Filled.Star, texto = "Assinatura", onClick = onAssinaturaClick)
+                    PerfilOpcao(
+                        icon = Icons.Filled.Star,
+                        texto = "Assinatura",
+                        onClick = onAssinaturaClick
+                    )
                     HorizontalDivider(color = Color(0xFFE0E0E0))
                     PerfilOpcao(
                         icon = Icons.Filled.Notifications,
@@ -342,7 +350,11 @@ fun PerfilScreen(
                     HorizontalDivider(color = Color(0xFFE0E0E0))
                     PerfilOpcao(icon = Icons.Filled.Info, texto = "Ajuda!", onClick = onAjudaClick)
                     HorizontalDivider(color = Color(0xFFE0E0E0))
-                    PerfilOpcao(icon = Icons.Filled.ExitToApp, texto = "Sair", onClick = onSairClick)
+                    PerfilOpcao(
+                        icon = Icons.Filled.ExitToApp,
+                        texto = "Sair",
+                        onClick = onSairClick
+                    )
                 }
             }
 
@@ -377,14 +389,23 @@ private fun PerfilTopBar(onEditClick: () -> Unit) {
             .padding(horizontal = 16.dp)
             .padding(top = 42.dp, bottom = 12.dp)
     ) {
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_fitunity_logo),
-            contentDescription = null,
-            modifier = Modifier.size(30.dp)
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(text = "FitUnity", color = FitUnityBlue, fontSize = 17.sp, fontWeight = FontWeight.Medium)
+        Row(
+            modifier = Modifier.align(Alignment.CenterStart),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_fitunity_logo),
+                contentDescription = null,
+                modifier = Modifier.size(30.dp)
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "FitUnity",
+                color = FitUnityBlue,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Medium
+            )
+        }
 
         Text(
             text = "Meu perfil",
@@ -456,7 +477,11 @@ private fun PerfilOpcao(
             )
             Spacer(modifier = Modifier.width(8.dp))
         }
-        Icon(imageVector = Icons.Filled.KeyboardArrowRight, contentDescription = null, tint = Color.Gray)
+        Icon(
+            imageVector = Icons.Filled.KeyboardArrowRight,
+            contentDescription = null,
+            tint = Color.Gray
+        )
     }
 }
 
