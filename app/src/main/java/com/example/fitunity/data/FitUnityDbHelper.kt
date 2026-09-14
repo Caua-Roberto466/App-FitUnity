@@ -7,11 +7,14 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.security.MessageDigest
+import java.util.Calendar
 
 // Modelo de dados com as informações visíveis do perfil
 data class PerfilCliente(
     val id: Long,
     val nome: String,
+    val dataNascimento: String,
+    val genero: String,
     val pesoAtual: Double,
     val objetivoPeso: Double,
     val treinosRealizados: Int,
@@ -19,7 +22,8 @@ data class PerfilCliente(
     val nivel: String,         // Iniciante, Intermediário, Avançado
     val tipoPlano: String,     // Básico, Adaptado, Profissional
     val tempoCadastrado: String,
-    val progresso: Double      // Porcentagem
+    val progresso: Double,     // Porcentagem
+    val foco: String = "Hipertrofia" // Ex.: Hipertrofia, Emagrecimento
 )
 
 class FitUnityDbHelper(context: Context) :
@@ -42,15 +46,19 @@ class FitUnityDbHelper(context: Context) :
                 $COLUMN_NIVEL TEXT DEFAULT 'Iniciante',
                 $COLUMN_TIPO_PLANO TEXT DEFAULT 'Básico',
                 $COLUMN_TEMPO_CADASTRADO TEXT DEFAULT 'Recente',
-                $COLUMN_PROGRESSO REAL DEFAULT 0.0
+                $COLUMN_PROGRESSO REAL DEFAULT 0.0,
+                $COLUMN_FOCO TEXT DEFAULT 'Hipertrofia'
             )
             """.trimIndent()
         )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_USUARIOS")
-        onCreate(db)
+        // Migração aditiva: quem já tinha o banco na versão 1 ganha a coluna nova
+        // sem perder os usuários já cadastrados.
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE $TABLE_USUARIOS ADD COLUMN $COLUMN_FOCO TEXT DEFAULT 'Hipertrofia'")
+        }
     }
 
     /**
@@ -69,6 +77,9 @@ class FitUnityDbHelper(context: Context) :
             put(COLUMN_NOME, nome.trim())
             put(COLUMN_DATA_NASCIMENTO, dataNascimento)
             put(COLUMN_GENERO, genero)
+            // Grava o ano em que a conta foi criada (ex.: "2026"), em vez de
+            // deixar o valor padrão 'Recente' da coluna no banco.
+            put(COLUMN_TEMPO_CADASTRADO, anoAtual())
         }
         return try {
             writableDatabase.insertOrThrow(TABLE_USUARIOS, null, valores)
@@ -108,9 +119,41 @@ class FitUnityDbHelper(context: Context) :
         return cursor.use { if (it.moveToFirst()) it.paraPerfilCliente() else null }
     }
 
+    /**
+     * Atualiza os dados editáveis do perfil (usado pela tela "Editar Dados").
+     * Retorna true se o registro foi encontrado e alterado.
+     */
+    fun atualizarPerfil(
+        id: Long,
+        nome: String,
+        dataNascimento: String,
+        genero: String,
+        pesoAtual: Double,
+        objetivoPeso: Double,
+        foco: String
+    ): Boolean {
+        val valores = ContentValues().apply {
+            put(COLUMN_NOME, nome.trim())
+            put(COLUMN_DATA_NASCIMENTO, dataNascimento)
+            put(COLUMN_GENERO, genero)
+            put(COLUMN_PESO_ATUAL, pesoAtual)
+            put(COLUMN_OBJETIVO_PESO, objetivoPeso)
+            put(COLUMN_FOCO, foco)
+        }
+        val linhasAfetadas = writableDatabase.update(
+            TABLE_USUARIOS,
+            valores,
+            "$COLUMN_ID = ?",
+            arrayOf(id.toString())
+        )
+        return linhasAfetadas > 0
+    }
+
     private fun Cursor.paraPerfilCliente(): PerfilCliente = PerfilCliente(
         id = getLong(getColumnIndexOrThrow(COLUMN_ID)),
         nome = getString(getColumnIndexOrThrow(COLUMN_NOME)),
+        dataNascimento = getString(getColumnIndexOrThrow(COLUMN_DATA_NASCIMENTO)),
+        genero = getString(getColumnIndexOrThrow(COLUMN_GENERO)),
         pesoAtual = getDouble(getColumnIndexOrThrow(COLUMN_PESO_ATUAL)),
         objetivoPeso = getDouble(getColumnIndexOrThrow(COLUMN_OBJETIVO_PESO)),
         treinosRealizados = getInt(getColumnIndexOrThrow(COLUMN_TREINOS_REALIZADOS)),
@@ -118,7 +161,8 @@ class FitUnityDbHelper(context: Context) :
         nivel = getString(getColumnIndexOrThrow(COLUMN_NIVEL)),
         tipoPlano = getString(getColumnIndexOrThrow(COLUMN_TIPO_PLANO)),
         tempoCadastrado = getString(getColumnIndexOrThrow(COLUMN_TEMPO_CADASTRADO)),
-        progresso = getDouble(getColumnIndexOrThrow(COLUMN_PROGRESSO))
+        progresso = getDouble(getColumnIndexOrThrow(COLUMN_PROGRESSO)),
+        foco = getString(getColumnIndexOrThrow(COLUMN_FOCO))
     )
 
     private fun normalizarEmail(email: String): String = email.trim().lowercase()
@@ -129,9 +173,12 @@ class FitUnityDbHelper(context: Context) :
         return bytes.joinToString("") { "%02x".format(it) }
     }
 
+    // Ano atual (ex.: "2026"), usado para preencher "Aluno desde <ano>" no momento do cadastro.
+    private fun anoAtual(): String = Calendar.getInstance().get(Calendar.YEAR).toString()
+
     companion object {
         private const val DATABASE_NAME = "fitunity.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
 
         const val TABLE_USUARIOS = "usuarios"
 
@@ -150,5 +197,6 @@ class FitUnityDbHelper(context: Context) :
         const val COLUMN_TIPO_PLANO = "tipo_plano"
         const val COLUMN_TEMPO_CADASTRADO = "tempo_cadastrado"
         const val COLUMN_PROGRESSO = "progresso"
+        const val COLUMN_FOCO = "foco"
     }
 }

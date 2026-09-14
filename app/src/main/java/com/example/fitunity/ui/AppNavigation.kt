@@ -255,12 +255,72 @@ fun AppNavigation() {
                     dieta = dieta,
                     onVoltarClick = { navController.popBackStack() },
                     onIniciarDietaClick = {
-                        // TODO: registrar a dieta escolhida no perfil do usuário (ex.: via FitUnityDbHelper)
                         navController.popBackStack()
                     }
                 )
             } else {
                 // Dieta não encontrada (id inválido) -> volta para a lista
+                navController.popBackStack()
+            }
+        }   // Lista de treinos (também acessível pela barra inferior)
+        composable(Rotas.TREINOS) {
+            TreinosScreen(
+                navController = navController,
+                onTreinoClick = { treinoId ->
+                    navController.navigate(Rotas.treinoDetalhe(treinoId))
+                }
+            )
+        }
+
+        // Detalhe de um treino específico
+        composable(
+            route = Rotas.TREINO_DETALHE,
+            arguments = listOf(navArgument("treinoId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val treinoId = backStackEntry.arguments?.getInt("treinoId") ?: -1
+            val treino = treinosMock.find { it.id == treinoId }
+
+            if (treino != null) {
+                TreinoDetalheScreen(
+                    treino = treino,
+                    onVoltarClick = { navController.popBackStack() },
+                    onIniciarTreinoClick = {
+                        navController.popBackStack()
+                    }
+                )
+            } else {
+                // Treino não encontrado (id inválido) -> volta para a lista
+                navController.popBackStack()
+            }
+        }
+
+        // Dieta (também acessível pela barra inferior)
+        composable(Rotas.DIETA) {
+            DietaScreen(
+                navController = navController,
+                onVerDietaClick = { dietaId ->
+                    navController.navigate(Rotas.dietaDetalhe(dietaId))
+                }
+            )
+        }
+
+        // Detalhe de uma dieta específica
+        composable(
+            route = Rotas.DIETA_DETALHE,
+            arguments = listOf(navArgument("dietaId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val dietaId = backStackEntry.arguments?.getString("dietaId") ?: ""
+            val dieta = dietasExemplo.find { it.id == dietaId }
+
+            if (dieta != null) {
+                DietaDetalheScreen(
+                    dieta = dieta,
+                    onVoltarClick = { navController.popBackStack() },
+                    onIniciarDietaClick = {
+                        navController.popBackStack()
+                    }
+                )
+            } else {
                 navController.popBackStack()
             }
         }
