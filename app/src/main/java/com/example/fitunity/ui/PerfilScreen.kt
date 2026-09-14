@@ -377,17 +377,18 @@ private fun PerfilTopBar(onEditClick: () -> Unit) {
             .padding(horizontal = 16.dp)
             .padding(top = 42.dp, bottom = 12.dp)
     ) {
+
         Image(
             painter = painterResource(id = R.drawable.ic_fitunity_logo),
             contentDescription = null,
-            modifier = Modifier
-                .size(28.dp)
-                .align(Alignment.CenterStart)
+            modifier = Modifier.size(30.dp)
         )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(text = "FitUnity", color = FitUnityBlue, fontSize = 17.sp, fontWeight = FontWeight.Medium)
 
         Text(
             text = "Meu perfil",
-            fontSize = 20.sp,
+            fontSize = 21.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black,
             modifier = Modifier.align(Alignment.Center)

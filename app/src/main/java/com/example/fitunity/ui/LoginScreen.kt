@@ -65,13 +65,13 @@ fun LoginScreen(
                 Image(
                     painter = painterResource(id = R.drawable.ic_fitunity_logo),
                     contentDescription = null,
-                    modifier = Modifier.size(60.dp)
+                    modifier = Modifier.size(32.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(text = "FitUnity", color = FitUnityBlue, fontSize = 22.sp, fontWeight = FontWeight.Medium)
             }
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
             Text(
                 text = "Bem-vindo de volta",
@@ -104,7 +104,9 @@ fun LoginScreen(
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = FitUnityBlue,
                     focusedLabelColor = FitUnityBlue,
-                    cursorColor = FitUnityBlue
+                    cursorColor = FitUnityBlue,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
                 )
             )
 
@@ -131,7 +133,9 @@ fun LoginScreen(
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = FitUnityBlue,
                     focusedLabelColor = FitUnityBlue,
-                    cursorColor = FitUnityBlue
+                    cursorColor = FitUnityBlue,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
                 )
             )
 

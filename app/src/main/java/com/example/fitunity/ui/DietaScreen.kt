@@ -206,7 +206,9 @@ private fun SearchBar(value: String, onValueChange: (String) -> Unit) {
             focusedBorderColor = FitUnityBlue,
             unfocusedBorderColor = Color.LightGray,
             focusedContainerColor = Color(0xFFF2F2F2),
-            unfocusedContainerColor = Color(0xFFF2F2F2)
+            unfocusedContainerColor = Color(0xFFF2F2F2),
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black
         )
     )
 }

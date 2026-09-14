@@ -10,6 +10,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -49,6 +51,8 @@ fun CadastroScreen(
     var genero by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     var confirmarSenha by remember { mutableStateOf("") }
+    var senhaVisivel by remember { mutableStateOf(false) }
+    var confirmarSenhaVisivel by remember { mutableStateOf(false) }
 
     var generoExpanded by remember { mutableStateOf(false) }
     val generos = listOf("Masculino", "Feminino", "Outro")
@@ -106,8 +110,7 @@ fun CadastroScreen(
             CadastroField(
                 label = "Nome completo",
                 value = nome,
-                onValueChange = { nome = it },
-                placeholder = "Digite seu nome"
+                onValueChange = { nome = it }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -116,7 +119,6 @@ fun CadastroScreen(
                 label = "Email",
                 value = email,
                 onValueChange = { email = it },
-                placeholder = "seuemail@exemplo.com",
                 keyboardType = KeyboardType.Email
             )
 
@@ -133,53 +135,47 @@ fun CadastroScreen(
                         dataNascimento = apenasDigitos
                     }
                 },
-                placeholder = "dd/mm/aaaa",
                 keyboardType = KeyboardType.Number,
+                supportingText = "dd/mm/aaaa",
                 visualTransformation = DataNascimentoVisualTransformation()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             // Seletor de gênero
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(text = "Gênero", fontSize = 14.sp, color = Color.Black, fontWeight = FontWeight.Medium)
-                Spacer(modifier = Modifier.height(6.dp))
-                ExposedDropdownMenuBox(
-                    expanded = generoExpanded,
-                    onExpandedChange = { generoExpanded = it }
-                ) {
-                    OutlinedTextField(
-                        value = genero,
-                        onValueChange = {},
-                        readOnly = true,
-                        placeholder = { Text("Selecione", color = Color.Gray) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .menuAnchor(),
-                        shape = RoundedCornerShape(14.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = FitUnityBlue,
-                            unfocusedBorderColor = Color.LightGray,
-                            focusedContainerColor = Color(0xFFF2F2F2),
-                            unfocusedContainerColor = Color(0xFFF2F2F2),
-                            focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black,
-                            cursorColor = FitUnityBlue
-                        )
+            ExposedDropdownMenuBox(
+                expanded = generoExpanded,
+                onExpandedChange = { generoExpanded = it }
+            ) {
+                OutlinedTextField(
+                    value = genero,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Gênero") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = FitUnityBlue,
+                        focusedLabelColor = FitUnityBlue,
+                        cursorColor = FitUnityBlue,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     )
-                    ExposedDropdownMenu(
-                        expanded = generoExpanded,
-                        onDismissRequest = { generoExpanded = false }
-                    ) {
-                        generos.forEach { opcao ->
-                            DropdownMenuItem(
-                                text = { Text(opcao) },
-                                onClick = {
-                                    genero = opcao
-                                    generoExpanded = false
-                                }
-                            )
-                        }
+                )
+                ExposedDropdownMenu(
+                    expanded = generoExpanded,
+                    onDismissRequest = { generoExpanded = false }
+                ) {
+                    generos.forEach { opcao ->
+                        DropdownMenuItem(
+                            text = { Text(opcao) },
+                            onClick = {
+                                genero = opcao
+                                generoExpanded = false
+                            }
+                        )
                     }
                 }
             }
@@ -190,8 +186,9 @@ fun CadastroScreen(
                 label = "Senha",
                 value = senha,
                 onValueChange = { senha = it },
-                placeholder = "Crie uma senha",
-                isPassword = true
+                isPassword = true,
+                senhaVisivel = senhaVisivel,
+                onSenhaVisivelChange = { senhaVisivel = it }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -200,8 +197,9 @@ fun CadastroScreen(
                 label = "Confirmar senha",
                 value = confirmarSenha,
                 onValueChange = { confirmarSenha = it },
-                placeholder = "Repita a senha",
                 isPassword = true,
+                senhaVisivel = confirmarSenhaVisivel,
+                onSenhaVisivelChange = { confirmarSenhaVisivel = it },
                 imeAction = ImeAction.Done
             )
 
@@ -274,7 +272,7 @@ private fun CadastroTopBar() {
             .fillMaxWidth()
             .background(Color.White)
             .padding(horizontal = 16.dp)
-            .padding(top = 32.dp, bottom = 12.dp),
+            .padding(top = 42.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
@@ -319,39 +317,46 @@ private fun CadastroField(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
-    placeholder: String,
     isPassword: Boolean = false,
+    senhaVisivel: Boolean = false,
+    onSenhaVisivelChange: (Boolean) -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
+    supportingText: String? = null,
     visualTransformation: VisualTransformation? = null
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(text = label, fontSize = 14.sp, color = Color.Black, fontWeight = FontWeight.Medium)
-        Spacer(modifier = Modifier.height(6.dp))
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            placeholder = { Text(placeholder, color = Color.Gray) },
-            singleLine = true,
-            visualTransformation = visualTransformation
-                ?: if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = if (isPassword) KeyboardType.Password else keyboardType,
-                imeAction = imeAction
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(14.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = FitUnityBlue,
-                unfocusedBorderColor = Color.LightGray,
-                focusedContainerColor = Color(0xFFF2F2F2),
-                unfocusedContainerColor = Color(0xFFF2F2F2),
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
-                cursorColor = FitUnityBlue
-            )
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        singleLine = true,
+        visualTransformation = visualTransformation
+            ?: if (isPassword && !senhaVisivel) PasswordVisualTransformation() else VisualTransformation.None,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = if (isPassword) KeyboardType.Password else keyboardType,
+            imeAction = imeAction
+        ),
+        trailingIcon = if (isPassword) {
+            {
+                IconButton(onClick = { onSenhaVisivelChange(!senhaVisivel) }) {
+                    Icon(
+                        imageVector = if (senhaVisivel) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                        contentDescription = if (senhaVisivel) "Ocultar senha" else "Mostrar senha"
+                    )
+                }
+            }
+        } else null,
+        supportingText = supportingText?.let { { Text(it) } },
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(14.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = FitUnityBlue,
+            focusedLabelColor = FitUnityBlue,
+            cursorColor = FitUnityBlue,
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black
         )
-    }
+    )
 }
 
 // Formata a digitação da data de nascimento inserindo as barras automaticamente: dd/mm/aaaa
