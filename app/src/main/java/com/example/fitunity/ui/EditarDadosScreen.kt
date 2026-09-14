@@ -46,13 +46,17 @@ fun EditarDadosScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Editar Dados", fontWeight = FontWeight.Bold) },
+                title = { Text("Editar Dados", fontWeight = FontWeight.Bold, color = FitUnityBlue) },
                 navigationIcon = {
                     IconButton(onClick = onVoltarClick) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Voltar")
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "Voltar", tint = FitUnityBlue)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White,
+                    titleContentColor = FitUnityBlue,
+                    navigationIconContentColor = FitUnityBlue
+                )
             )
         },
         containerColor = Color.White
@@ -150,7 +154,9 @@ private fun CampoTexto(
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = FitUnityBlue,
             focusedLabelColor = FitUnityBlue,
-            cursorColor = FitUnityBlue
+            cursorColor = FitUnityBlue,
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black
         )
     )
 }

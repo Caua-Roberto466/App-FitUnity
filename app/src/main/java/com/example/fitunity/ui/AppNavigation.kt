@@ -15,8 +15,10 @@ import androidx.navigation.navArgument
 import com.example.fitunity.data.FitUnityDbHelper
 import com.example.fitunity.data.SessionManager
 import com.example.fitunity.ui.screens.CadastroScreen
+import com.example.fitunity.ui.screens.DadosEditaveis
 import com.example.fitunity.ui.screens.DietaDetalheScreen
 import com.example.fitunity.ui.screens.DietaScreen
+import com.example.fitunity.ui.screens.EditarDadosScreen
 import com.example.fitunity.ui.screens.FitUnityOnboardingScreen
 import com.example.fitunity.ui.screens.HomeScreen
 import com.example.fitunity.ui.screens.LoginScreen
@@ -40,6 +42,7 @@ object Rotas {
     const val TREINOS = "treinos"
     const val DIETA = "dieta"
     const val PERFIL = "perfil"
+    const val EDITAR_DADOS = "editar_dados"
     const val DIETA_DETALHE = "dieta_detalhe/{dietaId}"
     const val TREINO_DETALHE = "treino_detalhe/{treinoId}"
 
@@ -171,13 +174,14 @@ fun AppNavigation() {
         // Perfil do usuário logado
         composable(Rotas.PERFIL) {
             val context = LocalContext.current
+            val dbHelper = remember { FitUnityDbHelper(context) }
             val perfil = SessionManager.usuarioAtual.value
 
             if (perfil != null) {
                 PerfilScreen(
                     navController = navController,
                     perfil = perfil,
-                    onEditarDadosClick = { /* TODO: tela de edição de dados */ },
+                    onEditarDadosClick = { navController.navigate(Rotas.EDITAR_DADOS) },
                     onAssinaturaClick = { /* TODO: tela de assinatura */ },
                     onNotificacoesClick = { /* TODO: tela de notificações */ },
                     onAjudaClick = { /* TODO: tela de ajuda */ },
@@ -187,7 +191,72 @@ fun AppNavigation() {
                             popUpTo(Rotas.SPLASH) { inclusive = true }
                         }
                     },
-                    onVerPlanoClick = { navController.navigate(Rotas.TREINOS) }
+                    onVerPlanoClick = { navController.navigate(Rotas.TREINOS) },
+                    onFotoAlterada = { caminhoArquivo ->
+                        dbHelper.atualizarFotoPerfil(perfil.id, caminhoArquivo)
+                        // Recarrega o perfil do banco para refletir a nova foto
+                        // imediatamente em qualquer tela que leia o SessionManager.
+                        val perfilAtualizado = dbHelper.buscarPerfilPorId(perfil.id)
+                        perfilAtualizado?.let { SessionManager.login(it, context) }
+                    }
+                )
+            } else {
+                // Sem sessão ativa -> manda para o login
+                LaunchedEffect(Unit) {
+                    navController.navigate(Rotas.LOGIN) {
+                        popUpTo(Rotas.SPLASH) { inclusive = true }
+                    }
+                }
+            }
+        }
+
+        // Editar Dados -> lê o usuário logado, valida/salva no banco e atualiza a sessão
+        composable(Rotas.EDITAR_DADOS) {
+            val context = LocalContext.current
+            val dbHelper = remember { FitUnityDbHelper(context) }
+            val perfil = SessionManager.usuarioAtual.value
+            var erro by remember { mutableStateOf<String?>(null) }
+
+            if (perfil != null) {
+                EditarDadosScreen(
+                    perfil = perfil,
+                    erro = erro,
+                    onVoltarClick = { navController.popBackStack() },
+                    onSalvarClick = { dados: DadosEditaveis ->
+                        if (dados.nome.isBlank()) {
+                            erro = "Informe seu nome"
+                            return@EditarDadosScreen
+                        }
+
+                        val pesoAtual = dados.pesoAtual.replace(",", ".").toDoubleOrNull()
+                        val objetivoPeso = dados.objetivoPeso.replace(",", ".").toDoubleOrNull()
+
+                        if (pesoAtual == null || objetivoPeso == null) {
+                            erro = "Peso e meta devem ser números válidos"
+                            return@EditarDadosScreen
+                        }
+
+                        val salvou = dbHelper.atualizarPerfil(
+                            id = perfil.id,
+                            nome = dados.nome,
+                            dataNascimento = dados.dataNascimento,
+                            genero = dados.genero,
+                            pesoAtual = pesoAtual,
+                            objetivoPeso = objetivoPeso,
+                            foco = dados.foco
+                        )
+
+                        if (salvou) {
+                            erro = null
+                            // Recarrega o perfil atualizado do banco e atualiza a sessão,
+                            // para que Perfil/Home reflitam os novos dados imediatamente.
+                            val perfilAtualizado = dbHelper.buscarPerfilPorId(perfil.id)
+                            perfilAtualizado?.let { SessionManager.login(it, context) }
+                            navController.popBackStack()
+                        } else {
+                            erro = "Não foi possível salvar. Tente novamente."
+                        }
+                    }
                 )
             } else {
                 // Sem sessão ativa -> manda para o login
@@ -200,69 +269,6 @@ fun AppNavigation() {
         }
 
         // Lista de treinos (também acessível pela barra inferior)
-        composable(Rotas.TREINOS) {
-            TreinosScreen(
-                navController = navController,
-                onTreinoClick = { treinoId ->
-                    navController.navigate(Rotas.treinoDetalhe(treinoId))
-                }
-            )
-        }
-
-        // Detalhe de um treino específico
-        composable(
-            route = Rotas.TREINO_DETALHE,
-            arguments = listOf(navArgument("treinoId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val treinoId = backStackEntry.arguments?.getInt("treinoId") ?: -1
-            val treino = treinosMock.find { it.id == treinoId }
-
-            if (treino != null) {
-                TreinoDetalheScreen(
-                    treino = treino,
-                    onVoltarClick = { navController.popBackStack() },
-                    onIniciarTreinoClick = {
-                        // TODO: registrar o treino iniciado no perfil do usuário (ex.: via FitUnityDbHelper)
-                        navController.popBackStack()
-                    }
-                )
-            } else {
-                // Treino não encontrado (id inválido) -> volta para a lista
-                navController.popBackStack()
-            }
-        }
-
-        // Dieta (também acessível pela barra inferior)
-        composable(Rotas.DIETA) {
-            DietaScreen(
-                navController = navController,
-                onVerDietaClick = { dietaId ->
-                    navController.navigate(Rotas.dietaDetalhe(dietaId))
-                }
-            )
-        }
-
-        // Detalhe de uma dieta específica
-        composable(
-            route = Rotas.DIETA_DETALHE,
-            arguments = listOf(navArgument("dietaId") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val dietaId = backStackEntry.arguments?.getString("dietaId") ?: ""
-            val dieta = dietasExemplo.find { it.id == dietaId }
-
-            if (dieta != null) {
-                DietaDetalheScreen(
-                    dieta = dieta,
-                    onVoltarClick = { navController.popBackStack() },
-                    onIniciarDietaClick = {
-                        navController.popBackStack()
-                    }
-                )
-            } else {
-                // Dieta não encontrada (id inválido) -> volta para a lista
-                navController.popBackStack()
-            }
-        }   // Lista de treinos (também acessível pela barra inferior)
         composable(Rotas.TREINOS) {
             TreinosScreen(
                 navController = navController,

@@ -1,5 +1,10 @@
 package com.example.fitunity.ui.screens
 
+import android.graphics.BitmapFactory
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -11,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
@@ -22,14 +28,20 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitunity.R
 import com.example.fitunity.data.PerfilCliente
+import java.io.File
 
 /**
  * Tela de Perfil do usuário logado.
@@ -47,17 +60,23 @@ import com.example.fitunity.data.PerfilCliente
  * onAjudaClick         -> abre a tela de ajuda / perguntas frequentes
  * onSairClick          -> encerra a sessão (SessionManager.logout()) e volta para o Login
  * onVerPlanoClick      -> leva para a lista de treinos
+ * onFotoAlterada        -> chamado com o caminho local do novo arquivo de foto,
+ *                          já copiado para o armazenamento interno do app; quem
+ *                          chama essa tela decide como persistir (ex.: via
+ *                          FitUnityDbHelper.atualizarFotoPerfil) e atualizar a sessão
  *
- * fotoResId            -> drawable da foto de perfil; se null, mostra um ícone padrão
  * historicoPeso        -> valores usados no gráfico "Progresso" (ex.: peso por semana/mês)
  * temNotificacaoNaoLida-> controla o pontinho azul ao lado de "Notificações"
+ *
+ * A foto de perfil vem de [perfil.fotoUri] (caminho de arquivo local); se for
+ * null, mostra um ícone padrão. Tocar na foto abre o seletor nativo de imagens
+ * para trocá-la.
  */
 @Composable
 fun PerfilScreen(
     navController: NavController,
     perfil: PerfilCliente,
     foco: String = perfil.foco,
-    fotoResId: Int? = null,
     verificado: Boolean = true,
     historicoPeso: List<Float> = listOf(80f, 79.3f, 79.6f, 78.4f, 77.8f, 78.6f, 78f, 77.5f),
     temNotificacaoNaoLida: Boolean = true,
@@ -66,8 +85,28 @@ fun PerfilScreen(
     onNotificacoesClick: () -> Unit = {},
     onAjudaClick: () -> Unit = {},
     onSairClick: () -> Unit = {},
-    onVerPlanoClick: () -> Unit = {}
+    onVerPlanoClick: () -> Unit = {},
+    onFotoAlterada: (String) -> Unit = {}
 ) {
+    val context = LocalContext.current
+
+    // Caminho da foto exibida agora — começa com a foto salva no perfil, e é
+    // atualizado imediatamente após uma troca, sem esperar a tela recarregar.
+    var fotoAtualPath by remember(perfil.fotoUri) { mutableStateOf(perfil.fotoUri) }
+
+    // Abre o seletor nativo de imagens (Android Photo Picker); não exige
+    // permissão de armazenamento em nenhuma versão do Android.
+    val seletorDeImagem = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            val caminhoSalvo = copiarImagemParaArmazenamentoInterno(context, uri, perfil.id)
+            if (caminhoSalvo != null) {
+                fotoAtualPath = caminhoSalvo
+                onFotoAlterada(caminhoSalvo)
+            }
+        }
+    }
     Scaffold(
         topBar = { PerfilTopBar(onEditClick = onEditarDadosClick) },
         bottomBar = { FitUnityBottomBar(navController) },
@@ -99,12 +138,21 @@ fun PerfilScreen(
                             modifier = Modifier
                                 .size(90.dp)
                                 .clip(CircleShape)
-                                .background(FitUnityBlue.copy(alpha = 0.15f)),
+                                .background(FitUnityBlue.copy(alpha = 0.15f))
+                                .clickable {
+                                    seletorDeImagem.launch(
+                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                    )
+                                },
                             contentAlignment = Alignment.Center
                         ) {
-                            if (fotoResId != null) {
+                            val bitmapDaFoto = fotoAtualPath?.let { caminho ->
+                                BitmapFactory.decodeFile(caminho)
+                            }
+
+                            if (bitmapDaFoto != null) {
                                 Image(
-                                    painter = painterResource(id = fotoResId),
+                                    bitmap = bitmapDaFoto.asImageBitmap(),
                                     contentDescription = "Foto de perfil",
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier
@@ -121,9 +169,34 @@ fun PerfilScreen(
                             }
                         }
 
+                        // Selo de câmera: indica que a foto pode ser trocada tocando nela.
+                        Box(
+                            modifier = Modifier
+                                .size(26.dp)
+                                .clip(CircleShape)
+                                .background(Color.White)
+                                .padding(2.dp)
+                                .clip(CircleShape)
+                                .background(FitUnityBlue)
+                                .clickable {
+                                    seletorDeImagem.launch(
+                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                    )
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.CameraAlt,
+                                contentDescription = "Trocar foto de perfil",
+                                tint = Color.White,
+                                modifier = Modifier.size(13.dp)
+                            )
+                        }
+
                         if (verificado) {
                             Box(
                                 modifier = Modifier
+                                    .align(Alignment.TopEnd)
                                     .size(24.dp)
                                     .clip(CircleShape)
                                     .background(Color.White)
@@ -383,6 +456,34 @@ private fun PerfilOpcao(
             Spacer(modifier = Modifier.width(8.dp))
         }
         Icon(imageVector = Icons.Filled.KeyboardArrowRight, contentDescription = null, tint = Color.Gray)
+    }
+}
+
+/**
+ * Copia a imagem apontada por [uriOrigem] (retornada pelo seletor nativo de
+ * fotos) para um arquivo permanente dentro do armazenamento interno do app
+ * (filesDir). Isso é necessário porque a permissão de leitura sobre a URI do
+ * seletor não sobrevive a um reinício do app.
+ *
+ * O arquivo é sempre salvo com o mesmo nome (baseado no id do usuário), então
+ * trocar a foto novamente substitui a anterior. Retorna o caminho absoluto do
+ * arquivo salvo, ou null se a cópia falhar.
+ */
+private fun copiarImagemParaArmazenamentoInterno(
+    context: android.content.Context,
+    uriOrigem: Uri,
+    usuarioId: Long
+): String? {
+    return try {
+        val arquivoDestino = File(context.filesDir, "perfil_$usuarioId.jpg")
+        context.contentResolver.openInputStream(uriOrigem)?.use { input ->
+            arquivoDestino.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+        arquivoDestino.absolutePath
+    } catch (e: Exception) {
+        null
     }
 }
 

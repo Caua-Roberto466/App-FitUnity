@@ -23,7 +23,8 @@ data class PerfilCliente(
     val tipoPlano: String,     // Básico, Adaptado, Profissional
     val tempoCadastrado: String,
     val progresso: Double,     // Porcentagem
-    val foco: String = "Hipertrofia" // Ex.: Hipertrofia, Emagrecimento
+    val foco: String = "Hipertrofia", // Ex.: Hipertrofia, Emagrecimento
+    val fotoUri: String? = null // Caminho do arquivo de foto de perfil salvo localmente, ou null se não houver
 )
 
 class FitUnityDbHelper(context: Context) :
@@ -47,17 +48,21 @@ class FitUnityDbHelper(context: Context) :
                 $COLUMN_TIPO_PLANO TEXT DEFAULT 'Básico',
                 $COLUMN_TEMPO_CADASTRADO TEXT DEFAULT 'Recente',
                 $COLUMN_PROGRESSO REAL DEFAULT 0.0,
-                $COLUMN_FOCO TEXT DEFAULT 'Hipertrofia'
+                $COLUMN_FOCO TEXT DEFAULT 'Hipertrofia',
+                $COLUMN_FOTO_URI TEXT DEFAULT NULL
             )
             """.trimIndent()
         )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Migração aditiva: quem já tinha o banco na versão 1 ganha a coluna nova
-        // sem perder os usuários já cadastrados.
+        // Migração aditiva: quem já tinha o banco em versões anteriores ganha as
+        // colunas novas sem perder os usuários já cadastrados.
         if (oldVersion < 2) {
             db.execSQL("ALTER TABLE $TABLE_USUARIOS ADD COLUMN $COLUMN_FOCO TEXT DEFAULT 'Hipertrofia'")
+        }
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE $TABLE_USUARIOS ADD COLUMN $COLUMN_FOTO_URI TEXT DEFAULT NULL")
         }
     }
 
@@ -149,6 +154,25 @@ class FitUnityDbHelper(context: Context) :
         return linhasAfetadas > 0
     }
 
+    /**
+     * Atualiza apenas a foto de perfil (usado ao trocar a foto na tela de Perfil).
+     * [caminhoArquivo] é o caminho local do arquivo de imagem já copiado para o
+     * armazenamento interno do app (ver PerfilScreen/AppNavigation). Retorna true
+     * se o registro foi encontrado e alterado.
+     */
+    fun atualizarFotoPerfil(id: Long, caminhoArquivo: String): Boolean {
+        val valores = ContentValues().apply {
+            put(COLUMN_FOTO_URI, caminhoArquivo)
+        }
+        val linhasAfetadas = writableDatabase.update(
+            TABLE_USUARIOS,
+            valores,
+            "$COLUMN_ID = ?",
+            arrayOf(id.toString())
+        )
+        return linhasAfetadas > 0
+    }
+
     private fun Cursor.paraPerfilCliente(): PerfilCliente = PerfilCliente(
         id = getLong(getColumnIndexOrThrow(COLUMN_ID)),
         nome = getString(getColumnIndexOrThrow(COLUMN_NOME)),
@@ -162,7 +186,8 @@ class FitUnityDbHelper(context: Context) :
         tipoPlano = getString(getColumnIndexOrThrow(COLUMN_TIPO_PLANO)),
         tempoCadastrado = getString(getColumnIndexOrThrow(COLUMN_TEMPO_CADASTRADO)),
         progresso = getDouble(getColumnIndexOrThrow(COLUMN_PROGRESSO)),
-        foco = getString(getColumnIndexOrThrow(COLUMN_FOCO))
+        foco = getString(getColumnIndexOrThrow(COLUMN_FOCO)),
+        fotoUri = getString(getColumnIndexOrThrow(COLUMN_FOTO_URI))
     )
 
     private fun normalizarEmail(email: String): String = email.trim().lowercase()
@@ -178,7 +203,7 @@ class FitUnityDbHelper(context: Context) :
 
     companion object {
         private const val DATABASE_NAME = "fitunity.db"
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 3
 
         const val TABLE_USUARIOS = "usuarios"
 
@@ -198,5 +223,6 @@ class FitUnityDbHelper(context: Context) :
         const val COLUMN_TEMPO_CADASTRADO = "tempo_cadastrado"
         const val COLUMN_PROGRESSO = "progresso"
         const val COLUMN_FOCO = "foco"
+        const val COLUMN_FOTO_URI = "foto_uri"
     }
 }
