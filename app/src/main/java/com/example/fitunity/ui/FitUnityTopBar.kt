@@ -40,7 +40,7 @@ fun FitUnityTopBar(
             .fillMaxWidth()
             .background(Color.White)
             .padding(horizontal = 16.dp)
-            .padding(top = 42.dp, bottom = 12.dp)
+            .padding(top = 22.dp, bottom = 12.dp)
     ) {
         Row(
             modifier = Modifier.align(Alignment.CenterStart),

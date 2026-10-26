@@ -6,6 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.ui.Modifier
 import com.example.fitunity.ui.AppNavigation
 import com.example.fitunity.ui.theme.FitUnityTheme
 
@@ -21,8 +24,13 @@ class MainActivity : ComponentActivity() {
             )
         )
         setContent {
-            FitUnityTheme {
-                AppNavigation()
+            Box(
+                modifier = Modifier
+                    .safeDrawingPadding() // Faz com que o app seja desenha apenas na area segura do celular
+            ) {
+                FitUnityTheme {
+                    AppNavigation()
+                }
             }
         }
     }
